@@ -1,0 +1,8 @@
+" Clang ALE options
+let g:ale_cpp_clang_options = '-I../../Include -I../Include -I./Include
+  \ -pthread -std=c++1z -m64 -I/usr/include/root -Wall'
+
+" C++ linters
+let g:ale_linters = {
+\   'cpp': ['clang'],
+\}
