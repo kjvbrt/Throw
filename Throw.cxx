@@ -56,6 +56,83 @@ string Throw::randomString(size_t length) {
   return str;
 }
 
+int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
+                           const string& param = "") {
+  int n = graph->GetN();
+  double* y = graph->GetY();
+
+  if (param.find("E") != string::npos) {
+    double y_err[n];
+    for (size_t i = 0; i < n; ++i) {
+      y_err[i] = y[i] - graph->GetErrorYlow(i);
+      cout << "y_err: " << y_err[i] << endl;
+    }
+    int minIndexErr = LocMin(n, y_err);
+
+    return minIndexErr;
+  }
+
+  int minIndex = LocMin(n, y);
+
+  return minIndex;
+}
+
+double Throw::GetMinimumX(TGraphAsymmErrors* graph,
+                          const string& param = "") {
+  int i = GetMinimumIndex(graph, param);
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return x;
+}
+
+double Throw::GetMinimumY(TGraphAsymmErrors* graph,
+                          const string& param = "") {
+  int i = GetMinimumIndex(graph, param);
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return y;
+}
+
+int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
+                           const string& param = "") {
+  int n = graph->GetN();
+  double* y = graph->GetY();
+
+  if (param.find("E") != string::npos) {
+    double y_err[n];
+    for (size_t i = 0; i < n; ++i) {
+      y_err[i] = y[i] + graph->GetErrorYhigh(i);
+    }
+    int minIndexErr = LocMax(n, y_err);
+
+    return minIndexErr;
+  }
+
+  int maxIndex = LocMax(n, y);
+
+  return maxIndex;
+}
+
+double Throw::GetMaximumX(TGraphAsymmErrors* graph,
+                          const string& param = "") {
+  int i = GetMaximumIndex(graph, param);
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return x;
+}
+
+double Throw::GetMaximumY(TGraphAsymmErrors* graph,
+                          const string& param = "") {
+  int i = GetMaximumIndex(graph, param);
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return y;
+}
+
 
 // Plotter
 int Throw::Plotter::nObj() {
@@ -63,10 +140,12 @@ int Throw::Plotter::nObj() {
 }
 
 Throw::Plotter::Plotter(const string& fileName) {
-  yMin = -1e7;
-  yMax = -1e7;
+  yMin = 0.;
+  yMinNoError = 0.;
+  yMax = 1.;
   xMin = -1e7;
   xMax = -1e7;
+
   logX = 0;
   logY = 0;
 
@@ -131,22 +210,76 @@ void Throw::Plotter::addHist(TH1D* inHist) {
   hist->SetLineWidth(2);
   hist->SetMarkerSize(.5);
 
+  int binMin = hist->GetMinimumBin();
+  cout << "binMin: " << binMin << endl;
+  double histMin = hist->GetBinContent(binMin) - hist->GetBinError(binMin);
+  cout << "histMin: " <<  histMin << endl;
+  int binMinNoError = hist->GetMinimumBin();
+  double histMinNoError = hist->GetBinContent(binMinNoError);
+  cout << "histMinNoError: " <<  histMinNoError << endl;
+  int binMax = hist->GetMaximumBin();
+  double histMax = hist->GetBinContent(binMax) + hist->GetBinError(binMax);
+
   if (nObj() == 0) {
     xLabel = hist->GetXaxis()->GetTitle();
     yLabel = hist->GetYaxis()->GetTitle();
-
-    yMin = hist->GetMinimum();
-    yMax = hist->GetMaximum();
+  
+    yMin = histMin;
+    yMinNoError = histMinNoError;
+    yMax = histMax;
   } else {
-    if (yMin > hist->GetMinimum()) {
-      yMin = hist->GetMinimum();
+    if (histMin < yMin) {
+      yMin = histMin;
     }
-    if (yMax < hist->GetMaximum()) {
-      yMax = hist->GetMaximum();
+    if (histMinNoError < yMinNoError) {
+      yMinNoError = histMinNoError;
+    }
+    if (histMax > yMax) {
+      yMax = histMax;
     }
   }
   histVec.emplace_back(hist);
   histDrawParamsVec.emplace_back("LE1P");
+
+  return;
+}
+
+void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
+  string graphName = inGraph->GetName();
+  graphName += "_" + randomString(6);
+  TGraphAsymmErrors* graph = dynamic_cast<TGraphAsymmErrors*>(
+      inGraph->Clone(graphName.c_str()));
+
+  graph->SetLineColor(colorVec.at(nObj() % colorVec.size()));
+  graph->SetMarkerColor(colorVec.at(nObj() % colorVec.size()));
+  graph->SetMarkerStyle(markerVec.at(nObj() % markerVec.size()));
+  graph->SetLineWidth(2);
+  graph->SetMarkerSize(.5);
+
+  double graphMin = GetMinimumY(graph, "E");
+  double graphMinNoError = GetMinimumY(graph);
+  double graphMax = GetMaximumY(graph, "E");
+
+  if (nObj() == 0) {
+    xLabel = graph->GetXaxis()->GetTitle();
+    yLabel = graph->GetYaxis()->GetTitle();
+
+    yMin = graphMin;
+    yMinNoError = graphMinNoError;
+    yMax = graphMax;
+  } else {
+    if (graphMin < yMin) {
+      yMin = graphMin;
+    }
+    if (graphMinNoError < yMinNoError) {
+      yMinNoError = graphMinNoError;
+    }
+    if (graphMax > yMax) {
+      yMax = graphMax;
+    }
+  }
+  graphVec.emplace_back(graph);
+  graphDrawParamsVec.emplace_back("LE1P");
 
   return;
 }
@@ -218,12 +351,17 @@ void Throw::Plotter::draw() {
   }
 
   if (logY) {
-    if (yMin == 0) {
+    yMin = yMin - (0.5 * yMin);
+    yMax = yMax + (0.5 * yMax);
+    cout << "yMin: " << yMin << endl;
+    if (yMin <= 0.) {
+      yMin = yMinNoError - (0.5 * yMinNoError);
+    }
+    cout << "yMin: " << yMin << endl;
+    if (yMin <= 0.) {
       yMin = 1e-9;
     }
-
-    yMin = yMin - 0.5 * yMin;
-    yMax = yMax + 0.5 * yMax;
+    cout << "yMin: " << yMin << endl;
   } else {
     yMin = yMin - 0.1 * yMin;
     yMax = yMax + 0.1 * yMax;

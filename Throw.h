@@ -20,6 +20,13 @@ namespace Throw {
   // Tools
   // https://stackoverflow.com/questions/440133
   string randomString(size_t);
+  int GetMinimumIndex(TGraphAsymmErrors*, const string&);
+  double GetMinimumX(TGraphAsymmErrors*, const string&);
+  double GetMinimumY(TGraphAsymmErrors*, const string&);
+  int GetMaximumIndex(TGraphAsymmErrors*, const string&);
+  double GetMaximumX(TGraphAsymmErrors*, const string&);
+  double GetMaximumY(TGraphAsymmErrors*, const string&);
+
 
 
   // Plotter
@@ -47,12 +54,14 @@ namespace Throw {
       string outFileName;
 
       int nObj();
-  
-    public:
+
       float yMin;
+      float yMinNoError;
       float yMax;
       float xMin;
       float xMax;
+  
+    public:
       int logX;
       int logY;
 
