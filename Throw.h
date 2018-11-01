@@ -35,18 +35,18 @@ namespace Throw {
       vector<TH1D*> histVec;
       vector<TGraphAsymmErrors*> graphVec;
       vector<TF1*> funcVec;
-  
+
       vector<string> histDrawParamsVec;
       vector<string> graphDrawParamsVec;
       vector<string> funcDrawParamsVec;
-  
+
       string xLabel;
       string yLabel;
       vector<string> noteVec;
 
       vector<int> colorVec;
       vector<int> markerVec;
- 
+
       float xOffset;
       float yOffset;
       float tickLength;
@@ -60,7 +60,7 @@ namespace Throw {
       float yMax;
       float xMin;
       float xMax;
-  
+
     public:
       int logX;
       int logY;
@@ -78,7 +78,7 @@ namespace Throw {
       float atlasLabelY1;
       float atlasLabelY2;
       string atlasLabelPlacement;
-  
+
       Plotter(const string&);
       virtual ~Plotter();
       void addHist(TH1D*);
