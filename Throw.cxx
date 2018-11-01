@@ -58,7 +58,7 @@ string Throw::randomString(size_t length) {
 
 int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
                            const string& param = "") {
-  int n = graph->GetN();
+  unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
   if (param.find("E") != string::npos) {
@@ -97,7 +97,7 @@ double Throw::GetMinimumY(TGraphAsymmErrors* graph,
 
 int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
                            const string& param = "") {
-  int n = graph->GetN();
+  unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
   if (param.find("E") != string::npos) {
@@ -193,7 +193,7 @@ Throw::Plotter::~Plotter() {
   for (auto &func : funcVec) {
     delete func;
   }
-  
+
   histVec.clear();
   graphVec.clear();
   funcVec.clear();
@@ -223,7 +223,7 @@ void Throw::Plotter::addHist(TH1D* inHist) {
   if (nObj() == 0) {
     xLabel = hist->GetXaxis()->GetTitle();
     yLabel = hist->GetYaxis()->GetTitle();
-  
+
     yMin = histMin;
     yMinNoError = histMinNoError;
     yMax = histMax;
@@ -457,4 +457,11 @@ void Throw::Plotter::draw() {
   delete canvas;
   if (drawLegend) delete legend;
   if (drawAtlasLabel) delete atlasLabel;
+}
+
+void Throw::Plotter::moveGraphsColors(int diff) {
+  for (size_t i = 0; i < graphVec.size(); ++i) {
+    graphVec.at(i)->SetLineColor(colorVec.at(i + diff));
+    graphVec.at(i)->SetMarkerColor(colorVec.at(i + diff));
+  }
 }
