@@ -459,9 +459,15 @@ void Throw::Plotter::draw() {
   if (drawAtlasLabel) delete atlasLabel;
 }
 
-void Throw::Plotter::moveGraphsColors(int diff) {
+void Throw::Plotter::rotateGraphsColors(int diff) {
   for (size_t i = 0; i < graphVec.size(); ++i) {
     graphVec.at(i)->SetLineColor(colorVec.at(i + diff));
     graphVec.at(i)->SetMarkerColor(colorVec.at(i + diff));
+  }
+}
+
+void Throw::Plotter::rotateGraphsMarkers(int diff = 0) {
+  for (size_t i = 0; i < graphVec.size(); ++i) {
+    graphVec.at(i)->SetMarkerStyle(markerVec.at(i + diff));
   }
 }

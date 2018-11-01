@@ -103,7 +103,8 @@ namespace Throw {
       void setNote(int, const string&);
       void addNote(const string&);
       void addNotes(const vector<string>&);
-      void moveGraphsColors(int);
+      void rotateGraphsColors(int);
+      void rotateGraphsMarkers(int);
 
       string getOutFileName();
       void setOutFileName(const string&);
