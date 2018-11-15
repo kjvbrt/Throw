@@ -189,6 +189,16 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   return;
 }
 
+void Throw::Plotter::addNote(const string& note) {
+  noteVec.emplace_back(note);
+}
+
+void Throw::Plotter::addNotes(const vector<std::string>& notes) {
+  for (size_t i = 0; i < notes.size(); ++i) {
+    noteVec.emplace_back(notes.at(i));
+  }
+}
+
 void Throw::Plotter::draw() {
   TCanvas *canvas = new TCanvas("canvas", "Canvas", 350, 350);
   gPad->SetTopMargin(.05);

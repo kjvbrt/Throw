@@ -11,47 +11,42 @@
 #include <TF1.h>
 
 
-// std
-using std::string;
-using std::vector;
-
-
 namespace Throw {
   // Tools
   // https://stackoverflow.com/questions/440133
-  string randomString(size_t);
-  int GetMinimumIndex(TGraphAsymmErrors*, const string&);
-  double GetMinimumX(TGraphAsymmErrors*, const string&);
-  double GetMinimumY(TGraphAsymmErrors*, const string&);
-  int GetMaximumIndex(TGraphAsymmErrors*, const string&);
-  double GetMaximumX(TGraphAsymmErrors*, const string&);
-  double GetMaximumY(TGraphAsymmErrors*, const string&);
+  std::string randomString(size_t);
+  int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
+  double GetMinimumX(TGraphAsymmErrors*, const std::string&);
+  double GetMinimumY(TGraphAsymmErrors*, const std::string&);
+  int GetMaximumIndex(TGraphAsymmErrors*, const std::string&);
+  double GetMaximumX(TGraphAsymmErrors*, const std::string&);
+  double GetMaximumY(TGraphAsymmErrors*, const std::string&);
 
 
 
   // Plotter
   class Plotter {
     private:
-      vector<TH1D*> histVec;
-      vector<TGraphAsymmErrors*> graphVec;
-      vector<TF1*> funcVec;
+      std::vector<TH1D*> histVec;
+      std::vector<TGraphAsymmErrors*> graphVec;
+      std::vector<TF1*> funcVec;
 
-      vector<string> histDrawParamsVec;
-      vector<string> graphDrawParamsVec;
-      vector<string> funcDrawParamsVec;
+      std::vector<std::string> histDrawParamsVec;
+      std::vector<std::string> graphDrawParamsVec;
+      std::vector<std::string> funcDrawParamsVec;
 
-      string xLabel;
-      string yLabel;
-      vector<string> noteVec;
+      std::string xLabel;
+      std::string yLabel;
+      std::vector<std::string> noteVec;
 
-      vector<int> colorVec;
-      vector<int> markerVec;
+      std::vector<int> colorVec;
+      std::vector<int> markerVec;
 
       float xOffset;
       float yOffset;
       float tickLength;
 
-      string outFileName;
+      std::string outFileName;
 
       int nObj();
 
@@ -70,16 +65,16 @@ namespace Throw {
       float legendX2;
       float legendY1;
       float legendY2;
-      string legendPlacement;
+      std::string legendPlacement;
 
       bool drawAtlasLabel;
       float atlasLabelX1;
       float atlasLabelX2;
       float atlasLabelY1;
       float atlasLabelY2;
-      string atlasLabelPlacement;
+      std::string atlasLabelPlacement;
 
-      Plotter(const string&);
+      Plotter(const std::string&);
       virtual ~Plotter();
       void addHist(TH1D*);
       void addGraph(TGraphAsymmErrors*);
@@ -88,31 +83,31 @@ namespace Throw {
       TGraphAsymmErrors* getGraph(int);
       TF1* getFunc(int);
 
-      string getHistDrawParam(int);
-      string getGraphDrawParam(int);
-      string getFuncDrawParam(int);
-      void setHistDrawParam(int, const string&);
-      void setGraphDrawParam(int, const string&);
-      void setFuncDrawParam(int, const string&);
+      std::string getHistDrawParam(int);
+      std::string getGraphDrawParam(int);
+      std::string getFuncDrawParam(int);
+      void setHistDrawParam(int, const std::string&);
+      void setGraphDrawParam(int, const std::string&);
+      void setFuncDrawParam(int, const std::string&);
 
       void setXmin(double);
       void setXmax(double);
       void setYmin(double);
       void setYmax(double);
 
-      string getXlabel();
-      string getYlabel();
-      string setXlabel();
-      string setYlabel();
-      string getNote(int);
-      void setNote(int, const string&);
-      void addNote(const string&);
-      void addNotes(const vector<string>&);
+      std::string getXlabel();
+      std::string getYlabel();
+      std::string setXlabel();
+      std::string setYlabel();
+      std::string getNote(int);
+      void setNote(int, const std::string&);
+      void addNote(const std::string&);
+      void addNotes(const std::vector<std::string>&);
       void rotateGraphsColors(int);
       void rotateGraphsMarkers(int);
 
-      string getOutFileName();
-      void setOutFileName(const string&);
+      std::string getOutFileName();
+      void setOutFileName(const std::string&);
 
       virtual void draw();
   };
