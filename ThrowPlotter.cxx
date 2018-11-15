@@ -72,8 +72,8 @@ Throw::Plotter::Plotter(const string& fileName) {
   colorVec.emplace_back(kBlue);
   colorVec.emplace_back(kRed);
   colorVec.emplace_back(kViolet);
-  colorVec.emplace_back(kOrange+1);
-  colorVec.emplace_back(kGreen+2);
+  colorVec.emplace_back(kOrange + 1);
+  colorVec.emplace_back(kGreen + 2);
 
   markerVec.emplace_back(20);
   markerVec.emplace_back(21);
@@ -81,8 +81,8 @@ Throw::Plotter::Plotter(const string& fileName) {
   markerVec.emplace_back(23);
   markerVec.emplace_back(24);
 
-  xOffset = 1.;
-  yOffset = 1.5;
+  xOffset = 1.3;
+  yOffset = 1.3;
   tickLength = 0.03;
 
   outFileName = fileName;
