@@ -8,8 +8,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(ROOT)
 include(${ROOT_USE_FILE})
 
+# Find all source files
+file(GLOB SRC "Throw*.cxx")
+
 # Create Throw static library
-add_library(Throw STATIC Throw.cxx)
+add_library(Throw STATIC ${SRC})
 target_link_libraries(Throw ${ROOT_LIBRARIES})
 
 # Create Test executable
