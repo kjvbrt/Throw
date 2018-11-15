@@ -158,9 +158,9 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   graph->SetLineWidth(2);
   graph->SetMarkerSize(.5);
 
-  double graphMin = GetMinimumY(graph, "E");
+  double graphMin = GetMinimumY(graph, "Err");
   double graphMinNoErr = GetMinimumY(graph, "");
-  double graphMax = GetMaximumY(graph, "E");
+  double graphMax = GetMaximumY(graph, "Err");
 
   if (nObj() == 0) {
     xLabel = graph->GetXaxis()->GetTitle();
