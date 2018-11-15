@@ -303,8 +303,11 @@ void Throw::Plotter::draw() {
                                      histDrawParamsVec.at(i).c_str());
     histVec.at(i)->SetTitle("");
 
-    if (nDraw == 0) histVec.at(i)->Draw(histDrawParamsVec.at(i).c_str());
-    else histVec.at(i)->Draw((histDrawParamsVec.at(i) + "same").c_str());
+    if (nDraw == 0) {
+      histVec.at(i)->Draw(histDrawParamsVec.at(i).c_str());
+    } else {
+      histVec.at(i)->Draw((histDrawParamsVec.at(i) + "same").c_str());
+    }
     ++nDraw;
   }
 
@@ -324,12 +327,18 @@ void Throw::Plotter::draw() {
     graphVec.at(i)->SetMinimum(yMin);
     graphVec.at(i)->SetMaximum(yMax);
 
+    graphVec.at(i)->GetXaxis()->SetTitle(xLabel.c_str());
+    graphVec.at(i)->GetYaxis()->SetTitle(yLabel.c_str());
+
     if (drawLegend) legend->AddEntry(graphVec.at(i), graphVec.at(i)->GetTitle(),
                                      (graphDrawParamsVec.at(i) + "L").c_str());
     graphVec.at(i)->SetTitle("");
 
-    if (nDraw == 0) graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "A").c_str());
-    else graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "same").c_str());
+    if (nDraw == 0) {
+      graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "A").c_str());
+    } else {
+      graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "same").c_str());
+    }
     ++nDraw;
   }
 
@@ -346,13 +355,19 @@ void Throw::Plotter::draw() {
     funcVec.at(i)->GetYaxis()->SetTitleSize(12);
     funcVec.at(i)->GetYaxis()->SetTitleOffset(yOffset);
 
+    funcVec.at(i)->GetXaxis()->SetTitle(xLabel.c_str());
+    funcVec.at(i)->GetYaxis()->SetTitle(yLabel.c_str());
+
     if (drawLegend) legend->AddEntry(funcVec.at(i), funcVec.at(i)->GetTitle(),
                                      funcDrawParamsVec.at(i).c_str());
     funcVec.at(i)->SetTitle("");
 
     funcVec.at(i)->Draw(funcDrawParamsVec.at(i).c_str());
-    if (nDraw == 0) funcVec.at(i)->Draw(funcDrawParamsVec.at(i).c_str());
-    else funcVec.at(i)->Draw((funcDrawParamsVec.at(i) + "same").c_str());
+    if (nDraw == 0) {
+      funcVec.at(i)->Draw(funcDrawParamsVec.at(i).c_str());
+    } else {
+      funcVec.at(i)->Draw((funcDrawParamsVec.at(i) + "same").c_str());
+    }
     ++nDraw;
   }
 
