@@ -95,6 +95,11 @@ namespace Throw {
       void setGraphDrawParam(int, const string&);
       void setFuncDrawParam(int, const string&);
 
+      void setXmin(double);
+      void setXmax(double);
+      void setYmin(double);
+      void setYmax(double);
+
       string getXlabel();
       string getYlabel();
       string setXlabel();

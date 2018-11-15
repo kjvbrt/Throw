@@ -476,3 +476,11 @@ void Throw::Plotter::rotateGraphsMarkers(int diff = 0) {
     graphVec.at(i)->SetMarkerStyle(markerVec.at(i + diff));
   }
 }
+
+void Throw::Plotter::setYmin(double val) {
+  yMin = val;
+}
+
+void Throw::Plotter::setYmax(double val) {
+  yMax = val;
+}
