@@ -316,7 +316,10 @@ void Throw::Plotter::draw() {
     legend->SetBorderSize(0);
     legend->SetTextFont(43);
     legend->SetTextSize(12);
+  } else {
+    legend = new TLegend();
   }
+
 
   TPaveText *atlasLabel;
   if (drawAtlasLabel) {
@@ -329,6 +332,8 @@ void Throw::Plotter::draw() {
     atlasLabel->SetTextFont(43);
     atlasLabel->SetTextSize(14);
     atlasLabel->AddText("#bf{#it{ATLAS} Internal #sqrt{s} = 8 TeV}");
+  } else {
+    atlasLabel = new TPaveText();
   }
 
   gStyle->SetOptStat(0);
