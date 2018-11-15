@@ -51,10 +51,10 @@ namespace Throw {
       int nObj();
 
       float yMin;
-      float yMinNoError;
       float yMax;
-      float xMin;
-      float xMax;
+      float yMinObj;
+      float yMaxObj;
+      float yMinObjNoErr;
 
     public:
       int logX;

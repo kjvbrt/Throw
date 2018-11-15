@@ -45,11 +45,11 @@ int Throw::Plotter::nObj() {
 }
 
 Throw::Plotter::Plotter(const string& fileName) {
-  yMin = 0.;
-  yMinNoError = 0.;
-  yMax = 1.;
-  xMin = -1e7;
-  xMax = -1e7;
+  yMin = 1.;
+  yMax = -1.;
+  yMinObj = 1e-9;
+  yMaxObj = 1.;
+  yMinObjNoErr = 1e-9;
 
   logX = 0;
   logY = 0;
@@ -116,12 +116,9 @@ void Throw::Plotter::addHist(TH1D* inHist) {
   hist->SetMarkerSize(.5);
 
   int binMin = hist->GetMinimumBin();
-  cout << "binMin: " << binMin << endl;
   double histMin = hist->GetBinContent(binMin) - hist->GetBinError(binMin);
-  cout << "histMin: " <<  histMin << endl;
-  int binMinNoError = hist->GetMinimumBin();
-  double histMinNoError = hist->GetBinContent(binMinNoError);
-  cout << "histMinNoError: " <<  histMinNoError << endl;
+  int binMinNoErr = hist->GetMinimumBin();
+  double histMinNoErr = hist->GetBinContent(binMinNoErr);
   int binMax = hist->GetMaximumBin();
   double histMax = hist->GetBinContent(binMax) + hist->GetBinError(binMax);
 
@@ -130,14 +127,14 @@ void Throw::Plotter::addHist(TH1D* inHist) {
     yLabel = hist->GetYaxis()->GetTitle();
 
     yMin = histMin;
-    yMinNoError = histMinNoError;
+    yMinObjNoErr = histMinNoErr;
     yMax = histMax;
   } else {
     if (histMin < yMin) {
       yMin = histMin;
     }
-    if (histMinNoError < yMinNoError) {
-      yMinNoError = histMinNoError;
+    if (histMinNoErr < yMinObjNoErr) {
+      yMinObjNoErr = histMinNoErr;
     }
     if (histMax > yMax) {
       yMax = histMax;
@@ -162,25 +159,25 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   graph->SetMarkerSize(.5);
 
   double graphMin = GetMinimumY(graph, "E");
-  double graphMinNoError = GetMinimumY(graph, "");
+  double graphMinNoErr = GetMinimumY(graph, "");
   double graphMax = GetMaximumY(graph, "E");
 
   if (nObj() == 0) {
     xLabel = graph->GetXaxis()->GetTitle();
     yLabel = graph->GetYaxis()->GetTitle();
 
-    yMin = graphMin;
-    yMinNoError = graphMinNoError;
-    yMax = graphMax;
+    yMinObj = graphMin;
+    yMinObjNoErr = graphMinNoErr;
+    yMaxObj = graphMax;
   } else {
-    if (graphMin < yMin) {
-      yMin = graphMin;
+    if (graphMin < yMinObj) {
+      yMinObj = graphMin;
     }
-    if (graphMinNoError < yMinNoError) {
-      yMinNoError = graphMinNoError;
+    if (graphMinNoErr < yMinObjNoErr) {
+      yMinObjNoErr = graphMinNoErr;
     }
-    if (graphMax > yMax) {
-      yMax = graphMax;
+    if (graphMax > yMaxObj) {
+      yMaxObj = graphMax;
     }
   }
   graphVec.emplace_back(graph);
@@ -255,36 +252,31 @@ void Throw::Plotter::draw() {
   gPad->SetLogx(logX);
   gPad->SetLogy(logY);
 
-  int xMinBin = 1;
-  int xMaxBin = 1;
-  if (xMin > -1e6 && xMax > -1e6) {
-    for (int i = 0; i < histVec.size(); ++i) {
-      xMinBin = histVec.at(i)->FindBin(xMin) - 1;
-      if (xMinBin < 1) xMinBin = 1;
-      xMaxBin = histVec.at(i)->FindBin(xMax) + 1;
-      if (xMaxBin > histVec.at(i)->GetNbinsX()) xMaxBin = histVec.at(i)->GetNbinsX();
-      histVec.at(i)->GetXaxis()->SetRange(xMinBin, xMaxBin);
+  if (yMin > yMax) {
+    if (logY) {
+      yMin = 0.5 * yMinObj;
+      yMax = 1.5 * yMaxObj;
+      if (yMin <= 0.) {
+        yMin = 0.5 * yMinObjNoErr;
+      }
+      if (yMin <= 0.) {
+        yMin = 0.1 * yMaxObj;
+      }
+      if (yMin <= 0.) {
+        yMin = 1e-9;
+      }
+    } else {
+      if (yMinObj >= 0.) {
+        yMin = 0.9 * yMinObj;
+      } else {
+        yMin = 1.1 * yMinObj;
+      }
+      if (yMaxObj >= 0.) {
+        yMax = 1.1 * yMaxObj;
+      } else {
+        yMax = 0.9 * yMaxObj;
+      }
     }
-    for (int i = 0; i < graphVec.size(); ++i) {
-      graphVec.at(i)->GetXaxis()->SetRange(xMin, xMax);
-    }
-  }
-
-  if (logY) {
-    yMin = yMin - (0.5 * yMin);
-    yMax = yMax + (0.5 * yMax);
-    cout << "yMin: " << yMin << endl;
-    if (yMin <= 0.) {
-      yMin = yMinNoError - (0.5 * yMinNoError);
-    }
-    cout << "yMin: " << yMin << endl;
-    if (yMin <= 0.) {
-      yMin = 1e-9;
-    }
-    cout << "yMin: " << yMin << endl;
-  } else {
-    yMin = yMin - 0.1 * yMin;
-    yMax = yMax + 0.1 * yMax;
   }
 
   int nDraw = 0;
@@ -375,8 +367,8 @@ void Throw::Plotter::draw() {
   canvas->Print((outFileName + ".pdf").c_str());
 
   delete canvas;
-  if (drawLegend) delete legend;
-  if (drawAtlasLabel) delete atlasLabel;
+  delete legend;
+  delete atlasLabel;
 }
 
 void Throw::Plotter::rotateGraphsColors(int diff) {
