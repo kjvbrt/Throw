@@ -406,3 +406,23 @@ void Throw::Plotter::setYmin(double val) {
 void Throw::Plotter::setYmax(double val) {
   yMax = val;
 }
+
+void Throw::Plotter::setLogX(bool val) {
+  if (val) {
+    logX = 1;
+  } else {
+    logX = 0;
+  }
+}
+
+void Throw::Plotter::setLogY(bool val) {
+  if (val) {
+    logY = 1;
+  } else {
+    logY = 0;
+  }
+}
+
+void Throw::Plotter::setDrawLegend(bool val) {
+  drawLegend = val;
+}

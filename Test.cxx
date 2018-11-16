@@ -25,7 +25,7 @@ int main() {
   testPlot->addHist(testHistI);
   testPlot->addHist(testHistII);
 
-  testPlot->logY = 0;
+  testPlot->setLogY(false);
 
   testPlot->draw();
 

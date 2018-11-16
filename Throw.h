@@ -42,6 +42,14 @@ namespace Throw {
       std::vector<int> colorVec;
       std::vector<int> markerVec;
 
+      float yMin;
+      float yMax;
+      float yMinObj;
+      float yMaxObj;
+      float yMinObjNoErr;
+      int logX;
+      int logY;
+
       float xOffset;
       float yOffset;
       float tickLength;
@@ -50,16 +58,7 @@ namespace Throw {
 
       int nObj();
 
-      float yMin;
-      float yMax;
-      float yMinObj;
-      float yMaxObj;
-      float yMinObjNoErr;
-
     public:
-      int logX;
-      int logY;
-
       bool drawLegend;
       float legendX1;
       float legendX2;
@@ -94,6 +93,8 @@ namespace Throw {
       void setXmax(double);
       void setYmin(double);
       void setYmax(double);
+      void setLogX(bool);
+      void setLogY(bool);
 
       std::string getXlabel();
       std::string getYlabel();
@@ -105,6 +106,8 @@ namespace Throw {
       void addNotes(const std::vector<std::string>&);
       void rotateGraphsColors(int);
       void rotateGraphsMarkers(int);
+      void setDrawLegend(bool);
+      void setDrawAtlasLabel(bool);
 
       std::string getOutFileName();
       void setOutFileName(const std::string&);
