@@ -161,9 +161,6 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   double graphMin = GetYrangeMinWithErr(graph);
   double graphMinNoErr = GetYrangeMin(graph);
   double graphMax = GetYrangeMaxWithErr(graph);
-  cout << "min: " << graphMin << endl;
-  cout << "minNoErr: " << graphMinNoErr << endl;
-  cout << "max: " << graphMax << endl;
 
   if (nObj() == 0) {
     xLabel = graph->GetXaxis()->GetTitle();
