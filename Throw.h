@@ -15,6 +15,24 @@ namespace Throw {
   // Tools
   // https://stackoverflow.com/questions/440133
   std::string randomString(size_t);
+
+  // Graph point
+  double GetPointX(TGraph*, size_t);
+  double GetPointX(TGraphAsymmErrors*, size_t);
+  double GetPointY(TGraph*, size_t);
+  double GetPointY(TGraphAsymmErrors*, size_t);
+  void SetPointX(TGraph*, size_t, double);
+  void SetPointX(TGraphAsymmErrors*, size_t, double);
+  void SetPointY(TGraph*, size_t, double);
+  void SetPointY(TGraphAsymmErrors*, size_t, double);
+  // Graph range
+  double GetXrangeMin(TGraphAsymmErrors*);
+  double GetXrangeMax(TGraphAsymmErrors*);
+  double GetYrangeMin(TGraphAsymmErrors*);
+  double GetYrangeMinWithErr(TGraphAsymmErrors*);
+  double GetYrangeMax(TGraphAsymmErrors*);
+  double GetYrangeMaxWithErr(TGraphAsymmErrors*);
+  // Graph minimum/maximum
   int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
   double GetMinimumX(TGraphAsymmErrors*, const std::string&);
   double GetMinimumY(TGraphAsymmErrors*, const std::string&);

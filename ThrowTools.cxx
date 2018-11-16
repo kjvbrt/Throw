@@ -35,8 +35,6 @@ using std::to_string;
 // Root
 using TMath::MaxElement;
 using TMath::MinElement;
-using TMath::LocMax;
-using TMath::LocMin;
 
 
 // Tools
@@ -56,6 +54,110 @@ string Throw::randomString(size_t length) {
   return str;
 }
 
+
+// Graph point
+double Throw::GetPointX(TGraph* graph, size_t i) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return x;
+}
+
+double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return x;
+}
+
+double Throw::GetPointY(TGraph* graph, size_t i) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return y;
+}
+
+double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+
+  return y;
+}
+
+void Throw::SetPointX(TGraph* graph, size_t i, double val) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+  graph->SetPoint(i, val, y);
+}
+
+void Throw::SetPointX(TGraphAsymmErrors* graph, size_t i, double val) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+  graph->SetPoint(i, val, y);
+}
+
+void Throw::SetPointY(TGraph* graph, size_t i, double val) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+  graph->SetPoint(i, x, val);
+}
+
+void Throw::SetPointY(TGraphAsymmErrors* graph, size_t i, double val) {
+  double x, y;
+  graph->GetPoint(i, x, y);
+  graph->SetPoint(i, x, val);
+}
+
+// Graph range
+double Throw::GetYrangeMin(TGraphAsymmErrors* graph) {
+  size_t n = graph->GetN();
+  double* y = graph->GetY();
+
+  int i = TMath::LocMin(n, y);
+
+  return GetPointY(graph, i);
+}
+
+double Throw::GetYrangeMinWithErr(TGraphAsymmErrors* graph) {
+  double rangeMin = 1e9;
+  double* y = graph->GetY();
+  double* y_err = graph->GetEYlow();
+
+  for (size_t i = 0; i < graph->GetN(); ++i) {
+    double y_min = y[i] - y_err[i];
+    if (y_min < rangeMin) {
+      rangeMin = y_min;
+    }
+  }
+
+  return rangeMin;
+}
+
+double Throw::GetYrangeMax(TGraphAsymmErrors* graph) {
+  size_t n = graph->GetN();
+  double* y = graph->GetY();
+
+  int i = TMath::LocMax(n, y);
+
+  return GetPointY(graph, i);
+}
+
+double Throw::GetYrangeMaxWithErr(TGraphAsymmErrors* graph) {
+  double rangeMax = -1e9;
+  double* y = graph->GetY();
+  double* y_err = graph->GetEYhigh();
+
+  for (size_t i = 0; i < graph->GetN(); ++i) {
+    double y_max = y[i] + y_err[i];
+    if (y_max > rangeMax) {
+      rangeMax = y_max;
+    }
+  }
+
+  return rangeMax;
+}
+
+// Graph minimum/maximum
 int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
                            const string& param = "") {
   unsigned int n = graph->GetN();
@@ -66,12 +168,12 @@ int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
     for (size_t i = 0; i < n; ++i) {
       y_err[i] = y[i] - graph->GetErrorYlow(i);
     }
-    int minIndexErr = LocMin(n, y_err);
+    int minIndexErr = TMath::LocMin(n, y_err);
 
     return minIndexErr;
   }
 
-  int minIndex = LocMin(n, y);
+  int minIndex = TMath::LocMin(n, y);
 
   return minIndex;
 }
@@ -104,12 +206,12 @@ int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
     for (size_t i = 0; i < n; ++i) {
       y_err[i] = y[i] + graph->GetErrorYhigh(i);
     }
-    int minIndexErr = LocMax(n, y_err);
+    int minIndexErr = TMath::LocMax(n, y_err);
 
     return minIndexErr;
   }
 
-  int maxIndex = LocMax(n, y);
+  int maxIndex = TMath::LocMax(n, y);
 
   return maxIndex;
 }

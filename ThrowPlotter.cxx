@@ -158,9 +158,12 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   graph->SetLineWidth(2);
   graph->SetMarkerSize(.5);
 
-  double graphMin = GetMinimumY(graph, "Err");
-  double graphMinNoErr = GetMinimumY(graph, "");
-  double graphMax = GetMaximumY(graph, "Err");
+  double graphMin = GetYrangeMinWithErr(graph);
+  double graphMinNoErr = GetYrangeMin(graph);
+  double graphMax = GetYrangeMaxWithErr(graph);
+  cout << "min: " << graphMin << endl;
+  cout << "minNoErr: " << graphMinNoErr << endl;
+  cout << "max: " << graphMax << endl;
 
   if (nObj() == 0) {
     xLabel = graph->GetXaxis()->GetTitle();
@@ -181,7 +184,7 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
     }
   }
   graphVec.emplace_back(graph);
-  graphDrawParamsVec.emplace_back("LE1P");
+  graphDrawParamsVec.emplace_back("E1P");
 
   return;
 }
