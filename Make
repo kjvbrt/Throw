@@ -27,6 +27,14 @@ while [[ $# -gt 0 ]]; do
             INSTALL=true
             shift
             ;;
+        -p|--pack)
+            PACK=true
+            shift
+            ;;
+        -u|--upload)
+            UPLOAD=true
+            shift
+            ;;
          *)
             POSITIONAL+=("${1}")
             shift
@@ -42,12 +50,15 @@ if [ "${HELP}" = true ]; then
     echo "      -c, --clean    Clean build directory"
     echo "      -t, --test     Test the library"
     echo "      -i, --install  Test the library"
+    echo "      -p, --pack     Pack the library to tar.gz file"
+    echo "      -u, --upload   Upload the library to kjvbrt.org"
     exit
 fi
 
 if [ "${CLEAN}" == true ]; then
   echo "INFO: Cleaning \"${BUILD_DIR}\" directory..."
   rm -rf ${BUILD_DIR}/*
+  rm Throw.tar.gz
   exit
 fi
 
@@ -90,6 +101,18 @@ if [ ${SUCCESS} -eq 0 ] && [ "${INSTALL}" == true ]; then
     mkdir -p ${INSTALL_DIR}/lib
   fi
   cp ${BUILD_DIR}/libThrow.a ${INSTALL_DIR}/lib/
+fi
+
+if [ ${SUCCESS} -eq 0 ] && [ "${PACK}" == true ]; then
+  echo "INFO: Packing..."
+  cd ${WORK_DIR}
+  tar -czvf Throw.tar.gz Throw.h Throw*cxx Build/libThrow.a
+fi
+
+if [ ${SUCCESS} -eq 0 ] && [ "${UPLOAD}" == true ]; then
+  echo "INFO: UPLOADING..."
+  cd ${WORK_DIR}
+  scp Throw.tar.gz boltzmann:/var/www/kjvbrt.org/Throw/
 fi
 
 exit ${SUCCESS}
