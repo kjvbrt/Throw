@@ -5,7 +5,6 @@ BUILD_DIR=`pwd`"/Build"
 TEST_DIR=`pwd`"/Test"
 INSTALL_DIR=${HOME}/local
 
-# Argument parsing from
 # https://stackoverflow.com/questions/192249
 POSITIONAL=()
 KEY="${1}"
@@ -44,7 +43,7 @@ done
 set -- "${POSITIONAL[@]}"
 
 if [ "${HELP}" = true ]; then
-    echo "Usage: ./Make [-h, -c, -t]"
+    echo "Usage: ./Make [-h, -c, -t, -i, -p, -u]"
     echo
     echo "      -h, --help     Show this help"
     echo "      -c, --clean    Clean build directory"
