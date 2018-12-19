@@ -2,6 +2,7 @@
 
 // std
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ using TMath::MaxElement;
 using TMath::MinElement;
 
 
-// Tools
+// String tools
 // https://stackoverflow.com/questions/440133
 string Throw::randomString(size_t length) {
   auto randchar = []() -> char {
@@ -52,6 +53,19 @@ string Throw::randomString(size_t length) {
   std::generate_n(str.begin(), length, randchar);
 
   return str;
+}
+
+// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+std::vector<std::string> Throw::splitString(const std::string& s,
+                                            char delimiter) {
+  std::vector<std::string> tokens;
+  std::string token;
+  std::istringstream tokenStream(s);
+  while (std::getline(tokenStream, token, delimiter)) {
+    tokens.emplace_back(token);
+  }
+
+  return tokens;
 }
 
 

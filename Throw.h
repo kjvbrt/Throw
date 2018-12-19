@@ -13,8 +13,8 @@
 
 namespace Throw {
   // Tools
-  // https://stackoverflow.com/questions/440133
   std::string randomString(size_t);
+  std::vector<std::string> splitString(const std::string&, char);
 
   // Graph point
   double GetPointX(TGraph*, size_t);
@@ -25,6 +25,7 @@ namespace Throw {
   void SetPointX(TGraphAsymmErrors*, size_t, double);
   void SetPointY(TGraph*, size_t, double);
   void SetPointY(TGraphAsymmErrors*, size_t, double);
+
   // Graph range
   double GetXrangeMin(TGraphAsymmErrors*);
   double GetXrangeMax(TGraphAsymmErrors*);
@@ -32,6 +33,7 @@ namespace Throw {
   double GetYrangeMinWithErr(TGraphAsymmErrors*);
   double GetYrangeMax(TGraphAsymmErrors*);
   double GetYrangeMaxWithErr(TGraphAsymmErrors*);
+
   // Graph minimum/maximum
   int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
   double GetMinimumX(TGraphAsymmErrors*, const std::string&);
