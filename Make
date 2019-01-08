@@ -3,7 +3,7 @@
 WORK_DIR=`pwd`
 BUILD_DIR=`pwd`"/Build"
 TEST_DIR=`pwd`"/Test"
-INSTALL_DIR=${HOME}/.local
+INSTALL_DIR=${HOME}/.local/throw
 
 # https://stackoverflow.com/questions/192249
 POSITIONAL=()
