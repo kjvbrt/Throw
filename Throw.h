@@ -13,8 +13,15 @@
 
 namespace Throw {
   // Tools
-  std::string randomString(size_t);
-  std::vector<std::string> splitString(const std::string&, char);
+
+  // Strings manipulation
+  std::string RandomString();
+  std::string RandomString(size_t);
+  std::vector<std::string> SplitString(const std::string&, char);
+  bool ReplaceString(std::string&, const std::string&, const std::string&);
+  bool RemoveLastCharacter(std::string&, const std::string&);
+  bool FindString(const std::string&, const std::string&);
+  bool StringsMatch(const std::string&, const std::string&);
 
   // Graph point
   double GetPointX(TGraph*, size_t);

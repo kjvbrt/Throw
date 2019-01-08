@@ -106,7 +106,7 @@ Throw::Plotter::~Plotter() {
 
 void Throw::Plotter::addHist(TH1D* inHist) {
   string histName = inHist->GetName();
-  histName += "_" + randomString(6);
+  histName += "_" + RandomString();
   TH1D* hist = dynamic_cast<TH1D*>(inHist->Clone(histName.c_str()));
 
   hist->SetLineColor(colorVec.at(nObj() % colorVec.size()));
@@ -148,7 +148,7 @@ void Throw::Plotter::addHist(TH1D* inHist) {
 
 void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   string graphName = inGraph->GetName();
-  graphName += "_" + randomString(6);
+  graphName += "_" + RandomString();
   TGraphAsymmErrors* graph = dynamic_cast<TGraphAsymmErrors*>(
       inGraph->Clone(graphName.c_str()));
 

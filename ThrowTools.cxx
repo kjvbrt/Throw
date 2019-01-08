@@ -38,9 +38,19 @@ using TMath::MaxElement;
 using TMath::MinElement;
 
 
-// String tools
-// https://stackoverflow.com/questions/440133
-string Throw::randomString(size_t length) {
+// Tools
+
+// Strings manipulation
+string Throw::RandomString() {
+  /// Returns random string of length 6.
+  string str = RandomString(6);
+
+  return str;
+}
+
+string Throw::RandomString(size_t length) {
+  /// Returns random string of variable length.
+  /// https://stackoverflow.com/questions/440133
   auto randchar = []() -> char {
     const char charset[] =
     "0123456789"
@@ -55,9 +65,11 @@ string Throw::randomString(size_t length) {
   return str;
 }
 
-// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
-std::vector<std::string> Throw::splitString(const std::string& s,
+std::vector<std::string> Throw::SplitString(const std::string& s,
                                             char delimiter) {
+  /// Splits string at delimiters.
+  /// Returns vector of strings.
+  /// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
   std::vector<std::string> tokens;
   std::string token;
   std::istringstream tokenStream(s);
@@ -66,6 +78,55 @@ std::vector<std::string> Throw::splitString(const std::string& s,
   }
 
   return tokens;
+}
+
+bool Throw::ReplaceString(std::string& firstString,
+                          const std::string& fromString,
+                          const std::string& toString) {
+  /// Replace sub-string in first string.
+  /// https://stackoverflow.com/questions/3418231
+  size_t startPos = firstString.find(fromString, 0);
+  if (startPos == string::npos) {
+    return false;
+  }
+
+  firstString.replace(startPos, fromString.length(), toString);
+  return true;
+}
+
+bool Throw::RemoveLastCharacter(std::string& firstString,
+                                const std::string& c) {
+  /// Remove last character from the first string if the first string contains
+  /// it.
+  if (firstString.empty()) {
+    return false;
+  }
+
+  if (c.size() != 1) {
+    return false;
+  }
+
+  if (c.compare(&firstString.back()) != 0) {
+    return false;
+  }
+
+  firstString.replace(firstString.size() - 1, firstString.size(), "");
+
+  return true;
+}
+
+bool Throw::FindString(const std::string& firstString,
+                       const std::string& secondString) {
+  /// Returns true if second string is found inside of the first one.
+
+  return firstString.find(secondString, 0) != std::string::npos;
+}
+
+bool Throw::StringsMatch(const std::string& firstString,
+                         const std::string& secondString) {
+  /// Returns true if strings match exactly.
+
+  return firstString.compare(secondString) == 0;
 }
 
 
