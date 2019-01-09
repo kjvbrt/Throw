@@ -1,5 +1,5 @@
 /**
- * \file Throw.cxx
+ * \file ThrowGraph.cxx
  * \brief Implementation of useful functions.
  */
 
@@ -12,6 +12,9 @@
 
 
 // Graph point
+/**
+ * \brief Get x coordinate of a point
+ */
 double Throw::GetPointX(TGraph* graph, size_t i) {
   double x, y;
   graph->GetPoint(i, x, y);
@@ -19,6 +22,9 @@ double Throw::GetPointX(TGraph* graph, size_t i) {
   return x;
 }
 
+/**
+ * \brief Get x coordinate of a point
+ */
 double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
   double x, y;
   graph->GetPoint(i, x, y);
@@ -26,6 +32,9 @@ double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
   return x;
 }
 
+/**
+ * \brief Get y coordinate of a point
+ */
 double Throw::GetPointY(TGraph* graph, size_t i) {
   double x, y;
   graph->GetPoint(i, x, y);
@@ -33,6 +42,9 @@ double Throw::GetPointY(TGraph* graph, size_t i) {
   return y;
 }
 
+/**
+ * \brief Get y coordinate of a point
+ */
 double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
   double x, y;
   graph->GetPoint(i, x, y);
@@ -40,29 +52,42 @@ double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
   return y;
 }
 
+/**
+ * \brief Set x coordinate of a point
+ */
 void Throw::SetPointX(TGraph* graph, size_t i, double val) {
   double x, y;
   graph->GetPoint(i, x, y);
   graph->SetPoint(i, val, y);
 }
 
+/**
+ * \brief Set x coordinate of a point
+ */
 void Throw::SetPointX(TGraphAsymmErrors* graph, size_t i, double val) {
   double x, y;
   graph->GetPoint(i, x, y);
   graph->SetPoint(i, val, y);
 }
 
+/**
+ * \brief Set y coordinate of a point
+ */
 void Throw::SetPointY(TGraph* graph, size_t i, double val) {
   double x, y;
   graph->GetPoint(i, x, y);
   graph->SetPoint(i, x, val);
 }
 
+/**
+ * \brief Set y coordinate of a point
+ */
 void Throw::SetPointY(TGraphAsymmErrors* graph, size_t i, double val) {
   double x, y;
   graph->GetPoint(i, x, y);
   graph->SetPoint(i, x, val);
 }
+
 
 // Graph range
 double Throw::GetYrangeMin(TGraphAsymmErrors* graph) {

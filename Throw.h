@@ -70,6 +70,11 @@ namespace Throw {
   std::string Yesterday();
   /** @} */
 
+  /**
+   * \defgroup Graph
+   * \brief Time related fuctions.
+   * @{
+   */
   // Graph point
   double GetPointX(TGraph*, size_t);
   double GetPointX(TGraphAsymmErrors*, size_t);
@@ -80,7 +85,6 @@ namespace Throw {
   void SetPointY(TGraph*, size_t, double);
   void SetPointY(TGraphAsymmErrors*, size_t, double);
 
-
   // Graph range
   double GetXrangeMin(TGraphAsymmErrors*);
   double GetXrangeMax(TGraphAsymmErrors*);
@@ -89,7 +93,6 @@ namespace Throw {
   double GetYrangeMax(TGraphAsymmErrors*);
   double GetYrangeMaxWithErr(TGraphAsymmErrors*);
 
-
   // Graph minimum/maximum
   int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
   double GetMinimumX(TGraphAsymmErrors*, const std::string&);
@@ -97,6 +100,7 @@ namespace Throw {
   int GetMaximumIndex(TGraphAsymmErrors*, const std::string&);
   double GetMaximumX(TGraphAsymmErrors*, const std::string&);
   double GetMaximumY(TGraphAsymmErrors*, const std::string&);
+  /** @} */
 
 
   /**
