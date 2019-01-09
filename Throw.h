@@ -21,8 +21,8 @@
 
 namespace Throw {
   /**
-   * \defgroup StringManip Strings manipulation
-   * \brief Functions for manipulation with strings
+   * \defgroup StringManipulation
+   * \brief Functions for manipulation with strings.
    * @{
    */
   std::string RandomString();
@@ -37,7 +37,7 @@ namespace Throw {
 
   /**
    * \class InputParser
-   * \brief Input parser
+   * \brief Input parser.
    *
    * Solution found
    * <a href="https://stackoverflow.com/questions/865668">here</a>.
@@ -51,6 +51,24 @@ namespace Throw {
       std::vector<std::string> tokens;
   };
 
+
+  /**
+   * \defgroup Time
+   * \brief Time related fuctions.
+   * @{
+   */
+  tm GetCurrentTime();
+  std::string MonthNumToName(int);
+  std::string GetCurrentYear();
+  std::string GetCurrentMonth();
+  std::string GetCurrentDay();
+  std::string GetCurrentHour();
+  std::string GetCurrentMinute();
+  std::string GetCurrentSecond();
+  std::string Now();
+  std::string Today();
+  std::string Yesterday();
+  /** @} */
 
   // Graph point
   double GetPointX(TGraph*, size_t);

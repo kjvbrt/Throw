@@ -1,8 +1,3 @@
-/**
- * \file Test.cxx
- * \brief Simple test of the library.
- */
-
 // std
 #include <iostream>
 // Throw
