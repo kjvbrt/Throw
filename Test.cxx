@@ -1,12 +1,18 @@
-#include "Throw.h"
+/**
+ * \file Test.cxx
+ * \brief Simple test of the library.
+ */
 
 // std
 #include <iostream>
+// Throw
+#include "Throw.h"
 
 
 //std
 using std::cout;
 using std::endl;
+// Throw
 using Throw::Plotter;
 
 

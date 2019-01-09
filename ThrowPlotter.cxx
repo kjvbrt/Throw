@@ -1,59 +1,36 @@
 ///
 /// \file ThrowPlotter.cxx
-/// \brief Implementation of Plotter class
+/// \brief Implementation of the Plotter class
 ///
 
-#include "Throw.h"
 
 // std
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <chrono>
 // Root
 #include <TH1.h>
-#include <TH2.h>
-#include <TMath.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TLegend.h>
-#include <TAxis.h>
 #include <TPaveText.h>
 #include <TGraphAsymmErrors.h>
-#include <TGraph2D.h>
 #include <TF1.h>
+// Throw
+#include "Throw.h"
 
 
-// std
-using std::cout;
-using std::endl;
-using std::ostream;
-using std::ofstream;
-using std::streamsize;
-using std::ios_base;
-using std::basic_ios;
-using std::string;
-using std::vector;
-using std::distance;
-using std::to_string;
-// Root
-using TMath::MaxElement;
-using TMath::MinElement;
-using TMath::LocMax;
-using TMath::LocMin;
-
-
-// Plotter
-
-/// Total number of objects which should be plotted (histograms, graps and
-/// function).
-///
+/**
+ * \brief Total number of objects which should be plotted (histograms, graps
+ * and functions).
+ */
 int Throw::Plotter::nObj() {
   return histVec.size() + graphVec.size() + funcVec.size();
 }
 
-Throw::Plotter::Plotter(const string& fileName) {
+/**
+ * \brief Default constructor of Plotter class.
+ */
+Throw::Plotter::Plotter(const std::string& fileName) {
   yMin = 1.;
   yMax = -1.;
   yMinObj = 1e-9;
@@ -97,6 +74,9 @@ Throw::Plotter::Plotter(const string& fileName) {
   outFileName = fileName;
 }
 
+/**
+ * \brief Default destructor of Plotter class.
+ */
 Throw::Plotter::~Plotter() {
   for (auto &hist : histVec) {
     delete hist;
@@ -114,7 +94,7 @@ Throw::Plotter::~Plotter() {
 }
 
 void Throw::Plotter::addHist(TH1D* inHist) {
-  string histName = inHist->GetName();
+  std::string histName = inHist->GetName();
   histName += "_" + RandomString();
   TH1D* hist = dynamic_cast<TH1D*>(inHist->Clone(histName.c_str()));
 
@@ -156,7 +136,7 @@ void Throw::Plotter::addHist(TH1D* inHist) {
 }
 
 void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
-  string graphName = inGraph->GetName();
+  std::string graphName = inGraph->GetName();
   graphName += "_" + RandomString();
   TGraphAsymmErrors* graph = dynamic_cast<TGraphAsymmErrors*>(
       inGraph->Clone(graphName.c_str()));
@@ -195,11 +175,11 @@ void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
   return;
 }
 
-void Throw::Plotter::addNote(const string& note) {
+void Throw::Plotter::addNote(const std::string& note) {
   noteVec.emplace_back(note);
 }
 
-void Throw::Plotter::addNotes(const vector<std::string>& notes) {
+void Throw::Plotter::addNotes(const std::vector<std::string>& notes) {
   for (size_t i = 0; i < notes.size(); ++i) {
     noteVec.emplace_back(notes.at(i));
   }
@@ -214,19 +194,19 @@ void Throw::Plotter::draw() {
 
   TLegend *legend;
   if (drawLegend) {
-    if (legendPlacement.find("Up") != string::npos) {
+    if (legendPlacement.find("Up") != std::string::npos) {
       legendY1 = .55;
       legendY2 = .85;
     }
-    if (legendPlacement.find("Down") != string::npos) {
+    if (legendPlacement.find("Down") != std::string::npos) {
       legendY1 = .24;
       legendY2 = .45;
     }
-    if (legendPlacement.find("Right") != string::npos) {
+    if (legendPlacement.find("Right") != std::string::npos) {
       legendX1 = .60;
       legendX2 = .98;
     }
-    if (legendPlacement.find("Left") != string::npos) {
+    if (legendPlacement.find("Left") != std::string::npos) {
       legendX1 = .13;
       legendX2 = .55;
     }

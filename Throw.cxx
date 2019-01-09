@@ -1,68 +1,35 @@
-///
-/// \file ThrowTools.cxx
-/// \brief Implementation of tools (useful functions)
-///
+/**
+ * \file Throw.cxx
+ * \brief Implementation of useful functions.
+ */
 
-#include "Throw.h"
 
 // std
-#include <iostream>
 #include <sstream>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <chrono>
-// Root
-#include <TH1.h>
-#include <TH2.h>
-#include <TMath.h>
-#include <TStyle.h>
-#include <TCanvas.h>
-#include <TLegend.h>
-#include <TAxis.h>
-#include <TPaveText.h>
-#include <TGraphAsymmErrors.h>
-#include <TGraph2D.h>
-#include <TF1.h>
+// Throw
+#include "Throw.h"
 
 
-// std
-using std::cout;
-using std::endl;
-using std::ostream;
-using std::ofstream;
-using std::streamsize;
-using std::ios_base;
-using std::basic_ios;
-using std::string;
-using std::vector;
-using std::distance;
-using std::to_string;
-// Root
-using TMath::MaxElement;
-using TMath::MinElement;
-
-
-// Tools
-
-// Strings manipulation
-
-/// \fn string Throw::RandomString()
-/// \brief Returns random string of length 6
-///
-string Throw::RandomString() {
-  string str = RandomString(6);
+/**
+ * \ingroup StringsManip
+ * \brief Returns random string of length 6.
+ */
+std::string Throw::RandomString() {
+  std::string str = RandomString(6);
 
   return str;
 }
 
-/// \fn string Throw::RandomString(size_t length)
-/// \brief Returns random string of variable length
-
-/// Solution found
-/// <a href="https://stackoverflow.com/questions/440133">here</a>.
-///
-string Throw::RandomString(size_t length) {
+/**
+ * \ingroup StringsManip
+ * \brief Returns random string of variable length.
+ *
+ * Solution found
+ * <a href="https://stackoverflow.com/questions/440133">here</a>.
+ */
+std::string Throw::RandomString(size_t length) {
   auto randchar = []() -> char {
     const char charset[] =
     "0123456789"
@@ -71,16 +38,19 @@ string Throw::RandomString(size_t length) {
     const size_t max_index = (sizeof(charset) - 1);
     return charset[ rand() % max_index ];
   };
-  string str(length, 0);
+  std::string str(length, 0);
   std::generate_n(str.begin(), length, randchar);
 
   return str;
 }
 
-/// Splits string at delimiters.
-/// Returns vector of strings.
-/// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
-///
+/**
+ * \ingroup StringsManip
+ * \brief Splits string at delimiters and returns vector of strings.
+ *
+ * Solution found
+ * <a href="https://www.fluentcpp.com/2017/04/21/">here</a>.
+ */
 std::vector<std::string> Throw::SplitString(const std::string& s,
                                             char delimiter) {
   std::vector<std::string> tokens;
@@ -93,14 +63,18 @@ std::vector<std::string> Throw::SplitString(const std::string& s,
   return tokens;
 }
 
-/// Replace sub-string in first string.
-/// https://stackoverflow.com/questions/3418231
-///
+/**
+ * \ingroup StringsManip
+ * \brief Replace sub-string in first string.
+ *
+ * Solution found
+ * <a href="https://stackoverflow.com/questions/3418231">here</a>.
+ */
 bool Throw::ReplaceString(std::string& firstString,
                           const std::string& fromString,
                           const std::string& toString) {
   size_t startPos = firstString.find(fromString, 0);
-  if (startPos == string::npos) {
+  if (startPos == std::string::npos) {
     return false;
   }
 
@@ -108,9 +82,11 @@ bool Throw::ReplaceString(std::string& firstString,
   return true;
 }
 
-/// Remove last character from the first string if the first string contains
-/// it.
-///
+/**
+ * \ingroup StringsManip
+ * \brief Remove last character from the first string if the first string
+ * contains it.
+ */
 bool Throw::RemoveLastCharacter(std::string& firstString,
                                 const std::string& c) {
   if (firstString.empty()) {
@@ -130,19 +106,59 @@ bool Throw::RemoveLastCharacter(std::string& firstString,
   return true;
 }
 
-/// Returns true if second string is found inside of the first one.
-///
+/**
+ * \ingroup StringsManip
+ * \brief Returns true if second string is found inside of the first one.
+ */
 bool Throw::FindString(const std::string& firstString,
                        const std::string& secondString) {
   return firstString.find(secondString, 0) != std::string::npos;
 }
 
-/// Returns true if strings match exactly.
-///
+/**
+ * \ingroup StringsManip
+ * \brief Returns true if strings match exactly.
+ */
 bool Throw::StringsMatch(const std::string& firstString,
                          const std::string& secondString) {
 
   return firstString.compare(secondString) == 0;
+}
+
+/**
+ * \brief Default constructor of InputParser.
+ * \param argc number of program parameters.
+ * \param argv array of program parameters.
+ */
+Throw::InputParser::InputParser (int& argc, char** argv) {
+  for (size_t i = 1; i < argc; ++i) {
+    this->tokens.emplace_back(std::string(argv[i]));
+  }
+}
+
+/**
+ * \brief Get parameter value.
+ * \param option parameter name.
+ */
+const std::string& Throw::InputParser::getCmdOption(
+    const std::string& option) const {
+  std::vector<std::string>::const_iterator itr;
+  itr =  find(this->tokens.begin(), this->tokens.end(), option);
+  if (itr != this->tokens.end() && ++itr != this->tokens.end()) {
+    return *itr;
+  }
+  static const std::string empty_string;
+
+  return empty_string;
+}
+
+/**
+ * \brief Test whether the parameter exists.
+ * \param option parameter name.
+ */
+bool Throw::InputParser::cmdOptionExists(const std::string& option) const {
+    return find(this->tokens.begin(), this->tokens.end(), option)
+           != this->tokens.end();
 }
 
 
@@ -250,11 +266,11 @@ double Throw::GetYrangeMaxWithErr(TGraphAsymmErrors* graph) {
 
 // Graph minimum/maximum
 int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
-                           const string& param = "") {
+                           const std::string& param = "") {
   unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
-  if (param.find("Err") != string::npos) {
+  if (param.find("Err") != std::string::npos) {
     double y_err[n];
     for (size_t i = 0; i < n; ++i) {
       y_err[i] = y[i] - graph->GetErrorYlow(i);
@@ -270,7 +286,7 @@ int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
 }
 
 double Throw::GetMinimumX(TGraphAsymmErrors* graph,
-                          const string& param = "") {
+                          const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
   double x, y;
   graph->GetPoint(i, x, y);
@@ -279,7 +295,7 @@ double Throw::GetMinimumX(TGraphAsymmErrors* graph,
 }
 
 double Throw::GetMinimumY(TGraphAsymmErrors* graph,
-                          const string& param = "") {
+                          const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
   double x, y;
   graph->GetPoint(i, x, y);
@@ -288,11 +304,11 @@ double Throw::GetMinimumY(TGraphAsymmErrors* graph,
 }
 
 int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
-                           const string& param = "") {
+                           const std::string& param = "") {
   unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
-  if (param.find("Err") != string::npos) {
+  if (param.find("Err") != std::string::npos) {
     double y_err[n];
     for (size_t i = 0; i < n; ++i) {
       y_err[i] = y[i] + graph->GetErrorYhigh(i);
@@ -308,7 +324,7 @@ int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
 }
 
 double Throw::GetMaximumX(TGraphAsymmErrors* graph,
-                          const string& param = "") {
+                          const std::string& param = "") {
   int i = GetMaximumIndex(graph, param);
   double x, y;
   graph->GetPoint(i, x, y);
@@ -317,7 +333,7 @@ double Throw::GetMaximumX(TGraphAsymmErrors* graph,
 }
 
 double Throw::GetMaximumY(TGraphAsymmErrors* graph,
-                          const string& param = "") {
+                          const std::string& param = "") {
   int i = GetMaximumIndex(graph, param);
   double x, y;
   graph->GetPoint(i, x, y);

@@ -1,8 +1,10 @@
-///
-/// \file Throw.h
-/// \brief Main header file of the library
-///
-/// \author Juraj Smiesko
+/**
+ * \file Throw.h
+ * \brief Main header file of the library
+ *
+ *
+ * \author Juraj Smiesko
+ */
 
 #ifndef THROW_H
 #define THROW_H
@@ -18,9 +20,11 @@
 
 
 namespace Throw {
-  // Tools
-
-  // Strings manipulation
+  /**
+   * \defgroup StringManip Strings manipulation
+   * \brief Functions for manipulation with strings
+   * @{
+   */
   std::string RandomString();
   std::string RandomString(size_t);
   std::vector<std::string> SplitString(const std::string&, char);
@@ -28,6 +32,25 @@ namespace Throw {
   bool RemoveLastCharacter(std::string&, const std::string&);
   bool FindString(const std::string&, const std::string&);
   bool StringsMatch(const std::string&, const std::string&);
+  /** @} */
+
+
+  /**
+   * \class InputParser
+   * \brief Input parser
+   *
+   * Solution found
+   * <a href="https://stackoverflow.com/questions/865668">here</a>.
+   */
+  class InputParser {
+    public:
+      InputParser (int&, char**);
+      const std::string& getCmdOption(const std::string&) const;
+      bool cmdOptionExists(const std::string&) const;
+    private:
+      std::vector<std::string> tokens;
+  };
+
 
   // Graph point
   double GetPointX(TGraph*, size_t);
@@ -39,6 +62,7 @@ namespace Throw {
   void SetPointY(TGraph*, size_t, double);
   void SetPointY(TGraphAsymmErrors*, size_t, double);
 
+
   // Graph range
   double GetXrangeMin(TGraphAsymmErrors*);
   double GetXrangeMax(TGraphAsymmErrors*);
@@ -46,6 +70,7 @@ namespace Throw {
   double GetYrangeMinWithErr(TGraphAsymmErrors*);
   double GetYrangeMax(TGraphAsymmErrors*);
   double GetYrangeMaxWithErr(TGraphAsymmErrors*);
+
 
   // Graph minimum/maximum
   int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
@@ -56,8 +81,10 @@ namespace Throw {
   double GetMaximumY(TGraphAsymmErrors*, const std::string&);
 
 
-
-  // Plotter
+  /**
+   * \class Plotter
+   * \brief Plotting class for various objects combined in one
+   */
   class Plotter {
     private:
       std::vector<TH1D*> histVec;
