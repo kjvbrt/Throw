@@ -1,3 +1,8 @@
+///
+/// \file ThrowPlotter.cxx
+/// \brief Implementation of Plotter class
+///
+
 #include "Throw.h"
 
 // std
@@ -40,6 +45,10 @@ using TMath::LocMin;
 
 
 // Plotter
+
+/// Total number of objects which should be plotted (histograms, graps and
+/// function).
+///
 int Throw::Plotter::nObj() {
   return histVec.size() + graphVec.size() + funcVec.size();
 }

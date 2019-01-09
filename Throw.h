@@ -1,3 +1,9 @@
+///
+/// \file Throw.h
+/// \brief Main header file of the library
+///
+/// \author Juraj Smiesko
+
 #ifndef THROW_H
 #define THROW_H
 

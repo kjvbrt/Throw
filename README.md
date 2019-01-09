@@ -1,3 +1,3 @@
 # Throw
 
-Personal ROOT plotting library.
+A small complementary ROOT library.

@@ -1,3 +1,8 @@
+///
+/// \file ThrowTools.cxx
+/// \brief Implementation of tools (useful functions)
+///
+
 #include "Throw.h"
 
 // std
@@ -41,16 +46,23 @@ using TMath::MinElement;
 // Tools
 
 // Strings manipulation
+
+/// \fn string Throw::RandomString()
+/// \brief Returns random string of length 6
+///
 string Throw::RandomString() {
-  /// Returns random string of length 6.
   string str = RandomString(6);
 
   return str;
 }
 
+/// \fn string Throw::RandomString(size_t length)
+/// \brief Returns random string of variable length
+
+/// Solution found
+/// <a href="https://stackoverflow.com/questions/440133">here</a>.
+///
 string Throw::RandomString(size_t length) {
-  /// Returns random string of variable length.
-  /// https://stackoverflow.com/questions/440133
   auto randchar = []() -> char {
     const char charset[] =
     "0123456789"
@@ -65,11 +77,12 @@ string Throw::RandomString(size_t length) {
   return str;
 }
 
+/// Splits string at delimiters.
+/// Returns vector of strings.
+/// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+///
 std::vector<std::string> Throw::SplitString(const std::string& s,
                                             char delimiter) {
-  /// Splits string at delimiters.
-  /// Returns vector of strings.
-  /// https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
   std::vector<std::string> tokens;
   std::string token;
   std::istringstream tokenStream(s);
@@ -80,11 +93,12 @@ std::vector<std::string> Throw::SplitString(const std::string& s,
   return tokens;
 }
 
+/// Replace sub-string in first string.
+/// https://stackoverflow.com/questions/3418231
+///
 bool Throw::ReplaceString(std::string& firstString,
                           const std::string& fromString,
                           const std::string& toString) {
-  /// Replace sub-string in first string.
-  /// https://stackoverflow.com/questions/3418231
   size_t startPos = firstString.find(fromString, 0);
   if (startPos == string::npos) {
     return false;
@@ -94,10 +108,11 @@ bool Throw::ReplaceString(std::string& firstString,
   return true;
 }
 
+/// Remove last character from the first string if the first string contains
+/// it.
+///
 bool Throw::RemoveLastCharacter(std::string& firstString,
                                 const std::string& c) {
-  /// Remove last character from the first string if the first string contains
-  /// it.
   if (firstString.empty()) {
     return false;
   }
@@ -115,16 +130,17 @@ bool Throw::RemoveLastCharacter(std::string& firstString,
   return true;
 }
 
+/// Returns true if second string is found inside of the first one.
+///
 bool Throw::FindString(const std::string& firstString,
                        const std::string& secondString) {
-  /// Returns true if second string is found inside of the first one.
-
   return firstString.find(secondString, 0) != std::string::npos;
 }
 
+/// Returns true if strings match exactly.
+///
 bool Throw::StringsMatch(const std::string& firstString,
                          const std::string& secondString) {
-  /// Returns true if strings match exactly.
 
   return firstString.compare(secondString) == 0;
 }
