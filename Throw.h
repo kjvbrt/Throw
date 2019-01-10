@@ -95,11 +95,17 @@ namespace Throw {
   double GetYrangeMaxWithErr(TGraphAsymmErrors*);
 
   // Graph minimum/maximum
+  int GetMinimumIndex(TGraphAsymmErrors*);
   int GetMinimumIndex(TGraphAsymmErrors*, const std::string&);
+  double GetMinimumX(TGraphAsymmErrors*);
   double GetMinimumX(TGraphAsymmErrors*, const std::string&);
+  double GetMinimumY(TGraphAsymmErrors*);
   double GetMinimumY(TGraphAsymmErrors*, const std::string&);
+  int GetMaximumIndex(TGraphAsymmErrors*);
   int GetMaximumIndex(TGraphAsymmErrors*, const std::string&);
+  double GetMaximumX(TGraphAsymmErrors*);
   double GetMaximumX(TGraphAsymmErrors*, const std::string&);
+  double GetMaximumY(TGraphAsymmErrors*);
   double GetMaximumY(TGraphAsymmErrors*, const std::string&);
   /** @} */
 

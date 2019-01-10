@@ -164,6 +164,11 @@ double Throw::GetYrangeMaxWithErr(TGraphAsymmErrors* graph) {
 
 
 // Graph minimum/maximum
+int Throw::GetMinimumIndex(TGraphAsymmErrors* graph) {
+
+  return GetMinimumIndex(graph, "");
+}
+
 int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
                            const std::string& param = "") {
   unsigned int n = graph->GetN();
@@ -184,6 +189,11 @@ int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,
   return minIndex;
 }
 
+double Throw::GetMinimumX(TGraphAsymmErrors* graph) {
+
+  return GetMinimumX(graph, "");
+}
+
 double Throw::GetMinimumX(TGraphAsymmErrors* graph,
                           const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
@@ -193,6 +203,11 @@ double Throw::GetMinimumX(TGraphAsymmErrors* graph,
   return x;
 }
 
+double Throw::GetMinimumY(TGraphAsymmErrors* graph) {
+
+  return GetMinimumY(graph, "");
+}
+
 double Throw::GetMinimumY(TGraphAsymmErrors* graph,
                           const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
@@ -200,6 +215,11 @@ double Throw::GetMinimumY(TGraphAsymmErrors* graph,
   graph->GetPoint(i, x, y);
 
   return y;
+}
+
+int Throw::GetMaximumIndex(TGraphAsymmErrors* graph) {
+
+  return GetMaximumIndex(graph, "");
 }
 
 int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
@@ -222,6 +242,11 @@ int Throw::GetMaximumIndex(TGraphAsymmErrors* graph,
   return maxIndex;
 }
 
+double Throw::GetMaximumX(TGraphAsymmErrors* graph) {
+
+  return GetMaximumX(graph, "");
+}
+
 double Throw::GetMaximumX(TGraphAsymmErrors* graph,
                           const std::string& param = "") {
   int i = GetMaximumIndex(graph, param);
@@ -229,6 +254,11 @@ double Throw::GetMaximumX(TGraphAsymmErrors* graph,
   graph->GetPoint(i, x, y);
 
   return x;
+}
+
+double Throw::GetMaximumY(TGraphAsymmErrors* graph) {
+
+  return GetMaximumY(graph, "");
 }
 
 double Throw::GetMaximumY(TGraphAsymmErrors* graph,
