@@ -1,6 +1,6 @@
 /**
  * \file ThrowGraph.cxx
- * \brief Implementation of useful functions.
+ * \brief Implementation of TGraph (TGraphAsymmErrors) related functions.
  */
 
 
@@ -13,6 +13,7 @@
 
 // Graph point
 /**
+ * \ingroup Graph
  * \brief Get x coordinate of a point
  */
 double Throw::GetPointX(TGraph* graph, size_t i) {
@@ -23,6 +24,7 @@ double Throw::GetPointX(TGraph* graph, size_t i) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Get x coordinate of a point
  */
 double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
@@ -33,6 +35,7 @@ double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Get y coordinate of a point
  */
 double Throw::GetPointY(TGraph* graph, size_t i) {
@@ -43,6 +46,7 @@ double Throw::GetPointY(TGraph* graph, size_t i) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Get y coordinate of a point
  */
 double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
@@ -53,6 +57,7 @@ double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Set x coordinate of a point
  */
 void Throw::SetPointX(TGraph* graph, size_t i, double val) {
@@ -62,6 +67,7 @@ void Throw::SetPointX(TGraph* graph, size_t i, double val) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Set x coordinate of a point
  */
 void Throw::SetPointX(TGraphAsymmErrors* graph, size_t i, double val) {
@@ -71,6 +77,7 @@ void Throw::SetPointX(TGraphAsymmErrors* graph, size_t i, double val) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Set y coordinate of a point
  */
 void Throw::SetPointY(TGraph* graph, size_t i, double val) {
@@ -80,6 +87,7 @@ void Throw::SetPointY(TGraph* graph, size_t i, double val) {
 }
 
 /**
+ * \ingroup Graph
  * \brief Set y coordinate of a point
  */
 void Throw::SetPointY(TGraphAsymmErrors* graph, size_t i, double val) {
@@ -90,6 +98,10 @@ void Throw::SetPointY(TGraphAsymmErrors* graph, size_t i, double val) {
 
 
 // Graph range
+/**
+ * \ingroup Graph
+ * \brief Get graph range minimum on y-axis.
+ */
 double Throw::GetYrangeMin(TGraphAsymmErrors* graph) {
   size_t n = graph->GetN();
   double* y = graph->GetY();
@@ -99,6 +111,10 @@ double Throw::GetYrangeMin(TGraphAsymmErrors* graph) {
   return GetPointY(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get graph range minimum on y-axis (accounts for point error).
+ */
 double Throw::GetYrangeMinWithErr(TGraphAsymmErrors* graph) {
   double rangeMin = 1e9;
   double* y = graph->GetY();
@@ -114,6 +130,10 @@ double Throw::GetYrangeMinWithErr(TGraphAsymmErrors* graph) {
   return rangeMin;
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get graph range maximum on y-axis.
+ */
 double Throw::GetYrangeMax(TGraphAsymmErrors* graph) {
   size_t n = graph->GetN();
   double* y = graph->GetY();
@@ -123,6 +143,10 @@ double Throw::GetYrangeMax(TGraphAsymmErrors* graph) {
   return GetPointY(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get graph range maximum on y-axis (accounts for point error).
+ */
 double Throw::GetYrangeMaxWithErr(TGraphAsymmErrors* graph) {
   double rangeMax = -1e9;
   double* y = graph->GetY();
@@ -137,6 +161,7 @@ double Throw::GetYrangeMaxWithErr(TGraphAsymmErrors* graph) {
 
   return rangeMax;
 }
+
 
 // Graph minimum/maximum
 int Throw::GetMinimumIndex(TGraphAsymmErrors* graph,

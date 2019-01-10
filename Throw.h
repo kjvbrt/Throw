@@ -54,7 +54,7 @@ namespace Throw {
 
   /**
    * \defgroup Time
-   * \brief Time related fuctions.
+   * \brief Time related functions.
    * @{
    */
   tm GetCurrentTime();
@@ -70,9 +70,10 @@ namespace Throw {
   std::string Yesterday();
   /** @} */
 
+
   /**
    * \defgroup Graph
-   * \brief Time related fuctions.
+   * \brief Graph related functions.
    * @{
    */
   // Graph point
@@ -100,6 +101,16 @@ namespace Throw {
   int GetMaximumIndex(TGraphAsymmErrors*, const std::string&);
   double GetMaximumX(TGraphAsymmErrors*, const std::string&);
   double GetMaximumY(TGraphAsymmErrors*, const std::string&);
+  /** @} */
+
+
+  /**
+   * \defgroup IO
+   * \brief I/O related functions.
+   * @{
+   */
+  bool FileExists(const std::string&);
+  void PrintHist(TH1D*, const std::string&);
   /** @} */
 
 
