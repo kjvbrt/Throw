@@ -113,6 +113,12 @@ if [ ${SUCCESS} -eq 0 ] && [ "${UPLOAD}" == true ]; then
   echo "INFO: UPLOADING..."
   cd ${WORK_DIR}
   scp Throw.tar.gz boltzmann:/var/www/kjvbrt.org/Throw/
+  if [ $? -ne 0 ]; then
+    echo "ERROR: Problem with upload!"
+    exit 1
+  else
+    rm Throw.tar.gz
+  fi
 fi
 
 exit ${SUCCESS}
