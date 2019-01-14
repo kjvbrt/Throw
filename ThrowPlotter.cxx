@@ -20,22 +20,15 @@
 
 
 /**
- * \brief Total number of objects which should be plotted (histograms, graps
- * and functions).
+ * \brief Main constructor of Plotter class.
+ *
+ * \param filePath path of the output file.
  */
-int Throw::Plotter::nObj() {
-  return histVec.size() + graphVec.size() + funcVec.size();
-}
-
-/**
- * \brief Default constructor of Plotter class.
- */
-Throw::Plotter::Plotter(const std::string& fileName) {
+Throw::Plotter::Plotter(const std::string& filePath) {
+  xMin = 1.;
+  xMax = -1.;
   yMin = 1.;
   yMax = -1.;
-  yMinObj = 1e-9;
-  yMaxObj = 1.;
-  yMinObjNoErr = 1e-9;
 
   logX = 0;
   logY = 0;
@@ -71,321 +64,41 @@ Throw::Plotter::Plotter(const std::string& fileName) {
   yOffset = 1.3;
   tickLength = 0.03;
 
-  outFileName = fileName;
+  outFilePath = filePath;
 }
 
 /**
  * \brief Default destructor of Plotter class.
  */
 Throw::Plotter::~Plotter() {
-  for (auto &hist : histVec) {
-    delete hist;
-  }
-  for (auto &graph : graphVec) {
-    delete graph;
-  }
-  for (auto &func : funcVec) {
-    delete func;
-  }
-
-  histVec.clear();
-  graphVec.clear();
-  funcVec.clear();
+  colorVec.clear();
+  markerVec.clear();
 }
 
-void Throw::Plotter::addHist(TH1D* inHist) {
-  std::string histName = inHist->GetName();
-  histName += "_" + RandomString();
-  TH1D* hist = dynamic_cast<TH1D*>(inHist->Clone(histName.c_str()));
-
-  hist->SetLineColor(colorVec.at(nObj() % colorVec.size()));
-  hist->SetMarkerColor(colorVec.at(nObj() % colorVec.size()));
-  hist->SetMarkerStyle(markerVec.at(nObj() % markerVec.size()));
-  hist->SetLineWidth(2);
-  hist->SetMarkerSize(.5);
-
-  int binMin = hist->GetMinimumBin();
-  double histMin = hist->GetBinContent(binMin) - hist->GetBinError(binMin);
-  int binMinNoErr = hist->GetMinimumBin();
-  double histMinNoErr = hist->GetBinContent(binMinNoErr);
-  int binMax = hist->GetMaximumBin();
-  double histMax = hist->GetBinContent(binMax) + hist->GetBinError(binMax);
-
-  if (nObj() == 0) {
-    xLabel = hist->GetXaxis()->GetTitle();
-    yLabel = hist->GetYaxis()->GetTitle();
-
-    yMin = histMin;
-    yMinObjNoErr = histMinNoErr;
-    yMax = histMax;
-  } else {
-    if (histMin < yMin) {
-      yMin = histMin;
-    }
-    if (histMinNoErr < yMinObjNoErr) {
-      yMinObjNoErr = histMinNoErr;
-    }
-    if (histMax > yMax) {
-      yMax = histMax;
-    }
-  }
-  histVec.emplace_back(hist);
-  histDrawParamsVec.emplace_back("LE1P");
-
-  return;
+/**
+ * \brief Pick color for the object.
+ */
+int Throw::Plotter::pickColor(int index) {
+  index = index % colorVec.size();
+  return colorVec.at(index);
 }
 
-void Throw::Plotter::addGraph(TGraphAsymmErrors* inGraph) {
-  std::string graphName = inGraph->GetName();
-  graphName += "_" + RandomString();
-  TGraphAsymmErrors* graph = dynamic_cast<TGraphAsymmErrors*>(
-      inGraph->Clone(graphName.c_str()));
-
-  graph->SetLineColor(colorVec.at(nObj() % colorVec.size()));
-  graph->SetMarkerColor(colorVec.at(nObj() % colorVec.size()));
-  graph->SetMarkerStyle(markerVec.at(nObj() % markerVec.size()));
-  graph->SetLineWidth(2);
-  graph->SetMarkerSize(.5);
-
-  double graphMin = GetYrangeMinWithErr(graph);
-  double graphMinNoErr = GetYrangeMin(graph);
-  double graphMax = GetYrangeMaxWithErr(graph);
-
-  if (nObj() == 0) {
-    xLabel = graph->GetXaxis()->GetTitle();
-    yLabel = graph->GetYaxis()->GetTitle();
-
-    yMinObj = graphMin;
-    yMinObjNoErr = graphMinNoErr;
-    yMaxObj = graphMax;
-  } else {
-    if (graphMin < yMinObj) {
-      yMinObj = graphMin;
-    }
-    if (graphMinNoErr < yMinObjNoErr) {
-      yMinObjNoErr = graphMinNoErr;
-    }
-    if (graphMax > yMaxObj) {
-      yMaxObj = graphMax;
-    }
-  }
-  graphVec.emplace_back(graph);
-  graphDrawParamsVec.emplace_back("E1P");
-
-  return;
+/**
+ * \brief Pick marker style for the object.
+ */
+int Throw::Plotter::pickMarker(int index) {
+  index = index % markerVec.size();
+  return markerVec.at(index);
 }
 
-void Throw::Plotter::addNote(const std::string& note) {
-  noteVec.emplace_back(note);
+double Throw::Plotter::getYmin() {
+
+  return yMin;
 }
 
-void Throw::Plotter::addNotes(const std::vector<std::string>& notes) {
-  for (size_t i = 0; i < notes.size(); ++i) {
-    noteVec.emplace_back(notes.at(i));
-  }
-}
+double Throw::Plotter::getYmax() {
 
-void Throw::Plotter::draw() {
-  TCanvas *canvas = new TCanvas("canvas", "Canvas", 350, 350);
-  gPad->SetTopMargin(.05);
-  gPad->SetLeftMargin(.10);
-  gPad->SetBottomMargin(.10);
-  gPad->SetRightMargin(.05);
-
-  TLegend *legend;
-  if (drawLegend) {
-    if (legendPlacement.find("Up") != std::string::npos) {
-      legendY1 = .55;
-      legendY2 = .85;
-    }
-    if (legendPlacement.find("Down") != std::string::npos) {
-      legendY1 = .24;
-      legendY2 = .45;
-    }
-    if (legendPlacement.find("Right") != std::string::npos) {
-      legendX1 = .60;
-      legendX2 = .98;
-    }
-    if (legendPlacement.find("Left") != std::string::npos) {
-      legendX1 = .13;
-      legendX2 = .55;
-    }
-    legend = new TLegend(legendX1, legendY1, legendX2, legendY2);
-    legend->SetFillStyle(0);
-    legend->SetFillColor(0);
-    legend->SetShadowColor(0);
-    legend->SetBorderSize(0);
-    legend->SetTextFont(43);
-    legend->SetTextSize(12);
-  } else {
-    legend = new TLegend();
-  }
-
-
-  TPaveText *atlasLabel;
-  if (drawAtlasLabel) {
-    atlasLabel = new TPaveText(atlasLabelX1, atlasLabelY1,
-                               atlasLabelX2, atlasLabelY2, "NDC");
-    atlasLabel->SetFillStyle(0);
-    atlasLabel->SetFillColor(0);
-    atlasLabel->SetShadowColor(0);
-    atlasLabel->SetBorderSize(0);
-    atlasLabel->SetTextFont(43);
-    atlasLabel->SetTextSize(14);
-    atlasLabel->AddText("#bf{#it{ATLAS} Internal #sqrt{s} = 8 TeV}");
-  } else {
-    atlasLabel = new TPaveText();
-  }
-
-  gStyle->SetOptStat(0);
-  gPad->SetLogx(logX);
-  gPad->SetLogy(logY);
-
-  if (yMin > yMax) {
-    if (logY) {
-      yMin = 0.5 * yMinObj;
-      yMax = 1.5 * yMaxObj;
-      if (yMin <= 0.) {
-        yMin = 0.5 * yMinObjNoErr;
-      }
-      if (yMin <= 0.) {
-        yMin = 0.1 * yMaxObj;
-      }
-      if (yMin <= 0.) {
-        yMin = 1e-9;
-      }
-    } else {
-      if (yMinObj >= 0.) {
-        yMin = 0.9 * yMinObj;
-      } else {
-        yMin = 1.1 * yMinObj;
-      }
-      if (yMaxObj >= 0.) {
-        yMax = 1.1 * yMaxObj;
-      } else {
-        yMax = 0.9 * yMaxObj;
-      }
-    }
-  }
-
-  int nDraw = 0;
-  for (int i = 0; i < histVec.size(); ++i) {
-    histVec.at(i)->GetXaxis()->SetLabelFont(43);
-    histVec.at(i)->GetXaxis()->SetLabelSize(12);
-    histVec.at(i)->GetXaxis()->SetTitleFont(43);
-    histVec.at(i)->GetXaxis()->SetTitleSize(12);
-    histVec.at(i)->GetXaxis()->SetTitleOffset(xOffset);
-
-    histVec.at(i)->GetYaxis()->SetLabelFont(43);
-    histVec.at(i)->GetYaxis()->SetLabelSize(12);
-    histVec.at(i)->GetYaxis()->SetTitleFont(43);
-    histVec.at(i)->GetYaxis()->SetTitleSize(12);
-    histVec.at(i)->GetYaxis()->SetTitleOffset(yOffset);
-
-    histVec.at(i)->SetMinimum(yMin);
-    histVec.at(i)->SetMaximum(yMax);
-
-    histVec.at(i)->GetXaxis()->SetTitle(xLabel.c_str());
-    histVec.at(i)->GetYaxis()->SetTitle(yLabel.c_str());
-
-    if (drawLegend) legend->AddEntry(histVec.at(i), histVec.at(i)->GetTitle(),
-                                     histDrawParamsVec.at(i).c_str());
-    histVec.at(i)->SetTitle("");
-
-    if (nDraw == 0) {
-      histVec.at(i)->Draw(histDrawParamsVec.at(i).c_str());
-    } else {
-      histVec.at(i)->Draw((histDrawParamsVec.at(i) + "same").c_str());
-    }
-    ++nDraw;
-  }
-
-  for (int i = 0; i < graphVec.size(); ++i) {
-    graphVec.at(i)->GetXaxis()->SetLabelFont(43);
-    graphVec.at(i)->GetXaxis()->SetLabelSize(12);
-    graphVec.at(i)->GetXaxis()->SetTitleFont(43);
-    graphVec.at(i)->GetXaxis()->SetTitleSize(12);
-    graphVec.at(i)->GetXaxis()->SetTitleOffset(xOffset);
-
-    graphVec.at(i)->GetYaxis()->SetLabelFont(43);
-    graphVec.at(i)->GetYaxis()->SetLabelSize(12);
-    graphVec.at(i)->GetYaxis()->SetTitleFont(43);
-    graphVec.at(i)->GetYaxis()->SetTitleSize(12);
-    graphVec.at(i)->GetYaxis()->SetTitleOffset(yOffset);
-
-    graphVec.at(i)->SetMinimum(yMin);
-    graphVec.at(i)->SetMaximum(yMax);
-
-    graphVec.at(i)->GetXaxis()->SetTitle(xLabel.c_str());
-    graphVec.at(i)->GetYaxis()->SetTitle(yLabel.c_str());
-
-    if (drawLegend) legend->AddEntry(graphVec.at(i), graphVec.at(i)->GetTitle(),
-                                     (graphDrawParamsVec.at(i) + "L").c_str());
-    graphVec.at(i)->SetTitle("");
-
-    if (nDraw == 0) {
-      graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "A").c_str());
-    } else {
-      graphVec.at(i)->Draw((graphDrawParamsVec.at(i) + "same").c_str());
-    }
-    ++nDraw;
-  }
-
-  for (int i = 0; i < funcVec.size(); ++i) {
-    funcVec.at(i)->GetXaxis()->SetLabelFont(43);
-    funcVec.at(i)->GetXaxis()->SetLabelSize(12);
-    funcVec.at(i)->GetXaxis()->SetTitleFont(43);
-    funcVec.at(i)->GetXaxis()->SetTitleSize(12);
-    funcVec.at(i)->GetXaxis()->SetTitleOffset(xOffset);
-
-    funcVec.at(i)->GetYaxis()->SetLabelFont(43);
-    funcVec.at(i)->GetYaxis()->SetLabelSize(12);
-    funcVec.at(i)->GetYaxis()->SetTitleFont(43);
-    funcVec.at(i)->GetYaxis()->SetTitleSize(12);
-    funcVec.at(i)->GetYaxis()->SetTitleOffset(yOffset);
-
-    funcVec.at(i)->GetXaxis()->SetTitle(xLabel.c_str());
-    funcVec.at(i)->GetYaxis()->SetTitle(yLabel.c_str());
-
-    if (drawLegend) legend->AddEntry(funcVec.at(i), funcVec.at(i)->GetTitle(),
-                                     funcDrawParamsVec.at(i).c_str());
-    funcVec.at(i)->SetTitle("");
-
-    funcVec.at(i)->Draw(funcDrawParamsVec.at(i).c_str());
-    if (nDraw == 0) {
-      funcVec.at(i)->Draw(funcDrawParamsVec.at(i).c_str());
-    } else {
-      funcVec.at(i)->Draw((funcDrawParamsVec.at(i) + "same").c_str());
-    }
-    ++nDraw;
-  }
-
-  for (int i = 0; i < noteVec.size(); ++i) {
-    legend->AddEntry((TObject*)0, noteVec.at(i).c_str(), "");
-  }
-
-  if (drawLegend) legend->Draw();
-  if (drawAtlasLabel) atlasLabel->Draw();
-
-  canvas->Update();
-  canvas->Print((outFileName + ".pdf").c_str());
-
-  delete canvas;
-  delete legend;
-  delete atlasLabel;
-}
-
-void Throw::Plotter::rotateGraphsColors(int diff) {
-  for (size_t i = 0; i < graphVec.size(); ++i) {
-    graphVec.at(i)->SetLineColor(colorVec.at(i + diff));
-    graphVec.at(i)->SetMarkerColor(colorVec.at(i + diff));
-  }
-}
-
-void Throw::Plotter::rotateGraphsMarkers(int diff = 0) {
-  for (size_t i = 0; i < graphVec.size(); ++i) {
-    graphVec.at(i)->SetMarkerStyle(markerVec.at(i + diff));
-  }
+  return yMax;
 }
 
 void Throw::Plotter::setYmin(double val) {
@@ -396,6 +109,25 @@ void Throw::Plotter::setYmax(double val) {
   yMax = val;
 }
 
+/**
+ * \brief Returns whether asis X will be in logarithmic scale.
+ */
+bool Throw::Plotter::getLogX() {
+
+  return logX;
+}
+
+/**
+ * \brief Returns whether asis Y will be in logarithmic scale.
+ */
+bool Throw::Plotter::getLogY() {
+
+  return logY;
+}
+
+/**
+ * \brief Sets whether asis X will be in logarithmic scale.
+ */
 void Throw::Plotter::setLogX(bool val) {
   if (val) {
     logX = 1;
@@ -404,6 +136,9 @@ void Throw::Plotter::setLogX(bool val) {
   }
 }
 
+/**
+ * \brief Sets whether asis Y will be in logarithmic scale.
+ */
 void Throw::Plotter::setLogY(bool val) {
   if (val) {
     logY = 1;
@@ -412,6 +147,128 @@ void Throw::Plotter::setLogY(bool val) {
   }
 }
 
+double Throw::Plotter::getXoffset() {
+
+  return xOffset;
+}
+
+double Throw::Plotter::getYoffset() {
+
+  return yOffset;
+}
+
+/**
+ * \brief Get label on x-axis.
+ */
+std::string Throw::Plotter::getXlabel() {
+  return xLabel;
+}
+
+/**
+ * \brief Get label on y-axis.
+ */
+std::string Throw::Plotter::getYlabel() {
+  return yLabel;
+}
+
+/**
+ * \brief Set label on x-axis.
+ */
+void Throw::Plotter::setXlabel(const std::string& param) {
+  xLabel = param;
+}
+
+/**
+ * \brief Set label on y-axis.
+ */
+void Throw::Plotter::setYlabel(const std::string& param) {
+  yLabel = param;
+}
+
+/**
+ * \brief Add note to the list of notes.
+ */
+void Throw::Plotter::addNote(const std::string& note) {
+  noteVec.emplace_back(note);
+}
+
+/**
+ * \brief Add several notes to the list of notes at once.
+ */
+void Throw::Plotter::addNotes(const std::vector<std::string>& notes) {
+  for (size_t i = 0; i < notes.size(); ++i) {
+    noteVec.emplace_back(notes.at(i));
+  }
+}
+
+/**
+ * \brief Insert notes to the legend object.
+ */
+void Throw::Plotter::putNotesToLegend(TLegend* legend) {
+  for (int i = 0; i < noteVec.size(); ++i) {
+    legend->AddEntry((TObject*)0, noteVec.at(i).c_str(), "");
+  }
+}
+
 void Throw::Plotter::setDrawLegend(bool val) {
   drawLegend = val;
+}
+
+void Throw::Plotter::setXoffset(double val) {
+  xOffset = val;
+}
+
+void Throw::Plotter::setYoffset(double val) {
+  yOffset = val;
+}
+
+std::string Throw::Plotter::getHistDrawParam(int index) {
+
+  return histDrawParamsVec.at(index);
+}
+
+std::string Throw::Plotter::getGraphDrawParam(int index) {
+
+  return graphDrawParamsVec.at(index);
+}
+
+std::string Throw::Plotter::getFuncDrawParam(int index) {
+
+  return funcDrawParamsVec.at(index);
+}
+
+void Throw::Plotter::setHistDrawParam(int index,
+                                          const std::string& param) {
+  histDrawParamsVec.at(index) = param;
+}
+
+void Throw::Plotter::setGraphDrawParam(int index,
+                                           const std::string& param) {
+  graphDrawParamsVec.at(index) = param;
+}
+
+void Throw::Plotter::setFuncDrawParam(int index,
+                                          const std::string& param) {
+  funcDrawParamsVec.at(index) = param;
+}
+
+void Throw::Plotter::addHistDrawParam(const std::string& param) {
+  histDrawParamsVec.emplace_back(param);
+}
+
+void Throw::Plotter::addGraphDrawParam(const std::string& param) {
+  graphDrawParamsVec.emplace_back(param);
+}
+
+void Throw::Plotter::addFuncDrawParam(const std::string& param) {
+  funcDrawParamsVec.emplace_back(param);
+}
+
+std::string Throw::Plotter::getOutFilePath() {
+
+  return outFilePath;
+}
+
+void Throw::Plotter::setOutFilePath(const std::string& filePath) {
+  outFilePath = filePath;
 }

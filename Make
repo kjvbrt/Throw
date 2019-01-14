@@ -34,6 +34,10 @@ while [[ $# -gt 0 ]]; do
             UPLOAD=true
             shift
             ;;
+        -d|--documentation)
+            DOCUMENTATION=true
+            shift
+            ;;
          *)
             POSITIONAL+=("${1}")
             shift
@@ -43,14 +47,15 @@ done
 set -- "${POSITIONAL[@]}"
 
 if [ "${HELP}" = true ]; then
-    echo "Usage: ./Make [-h, -c, -t, -i, -p, -u]"
+    echo "Usage: ./Make [-h, -c, -t, -i, -p, -u, -d]"
     echo
-    echo "      -h, --help     Show this help"
-    echo "      -c, --clean    Clean build directory"
-    echo "      -t, --test     Test the library"
-    echo "      -i, --install  Test the library"
-    echo "      -p, --pack     Pack the library to tar.gz file"
-    echo "      -u, --upload   Upload the library to kjvbrt.org"
+    echo "      -h, --help           Show this help"
+    echo "      -c, --clean          Clean build directory"
+    echo "      -t, --test           Test the library"
+    echo "      -i, --install        Test the library"
+    echo "      -p, --pack           Pack the library to tar.gz file"
+    echo "      -u, --upload         Upload the library to kjvbrt.org"
+    echo "      -d, --documentation  Compile documentation"
     exit
 fi
 
@@ -110,7 +115,7 @@ if [ ${SUCCESS} -eq 0 ] && [ "${PACK}" == true ]; then
 fi
 
 if [ ${SUCCESS} -eq 0 ] && [ "${UPLOAD}" == true ]; then
-  echo "INFO: UPLOADING..."
+  echo "INFO: Uploading..."
   cd ${WORK_DIR}
   scp Throw.tar.gz boltzmann:/var/www/kjvbrt.org/Throw/
   if [ $? -ne 0 ]; then
@@ -119,6 +124,12 @@ if [ ${SUCCESS} -eq 0 ] && [ "${UPLOAD}" == true ]; then
   else
     rm Throw.tar.gz
   fi
+fi
+
+if [ ${SUCCESS} -eq 0 ] && [ "${DOCUMENTATION}" == true ]; then
+  echo "INFO: Compiling documentation..."
+  cd ${WORK_DIR}
+  doxygen
 fi
 
 exit ${SUCCESS}
