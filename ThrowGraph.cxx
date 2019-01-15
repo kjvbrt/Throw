@@ -16,84 +16,157 @@
  * \ingroup Graph
  * \brief Get x coordinate of a point
  */
-double Throw::GetPointX(TGraph* graph, size_t i) {
-  double x, y;
-  graph->GetPoint(i, x, y);
+double Throw::GetPointX(TGraph* graph, size_t index) {
+  double* xArr = graph->GetX();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
 
-  return x;
+  return xArr[index];
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of a point
+ */
+double Throw::GetPointY(TGraph* graph, size_t index) {
+  double* yArr = graph->GetY();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
+
+  return yArr[index];
+}
+
+/**
+ * \ingroup Graph
+ * \brief Set x coordinate of a point
+ */
+void Throw::SetPointX(TGraph* graph, size_t index, double val) {
+  double y = GetPointY(graph, index);
+  graph->SetPoint(index, val, y);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Set y coordinate of a point
+ */
+void Throw::SetPointY(TGraph* graph, size_t index, double val) {
+  double x = GetPointX(graph, index);
+  graph->SetPoint(index, x, val);
 }
 
 /**
  * \ingroup Graph
  * \brief Get x coordinate of a point
  */
-double Throw::GetPointX(TGraphAsymmErrors* graph, size_t i) {
-  double x, y;
-  graph->GetPoint(i, x, y);
+double Throw::GetPointX(TGraphAsymmErrors* graph, size_t index) {
+  double* xArr = graph->GetX();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
 
-  return x;
+  return xArr[index];
 }
 
 /**
  * \ingroup Graph
  * \brief Get y coordinate of a point
  */
-double Throw::GetPointY(TGraph* graph, size_t i) {
-  double x, y;
-  graph->GetPoint(i, x, y);
+double Throw::GetPointY(TGraphAsymmErrors* graph, size_t index) {
+  double* yArr = graph->GetY();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
 
-  return y;
+  return yArr[index];
+}
+
+/**
+ * \ingroup Graph
+ * \brief Set x coordinate of a point
+ */
+void Throw::SetPointX(TGraphAsymmErrors* graph, size_t index, double val) {
+  double y = GetPointY(graph, index);
+  graph->SetPoint(index, val, y);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Set y coordinate of a point
+ */
+void Throw::SetPointY(TGraphAsymmErrors* graph, size_t index, double val) {
+  double x = GetPointX(graph, index);
+  graph->SetPoint(index, x, val);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of a point
+ */
+double Throw::GetPointX(TGraph2D* graph, size_t index) {
+  double* xArr = graph->GetX();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
+
+  return xArr[index];
 }
 
 /**
  * \ingroup Graph
  * \brief Get y coordinate of a point
  */
-double Throw::GetPointY(TGraphAsymmErrors* graph, size_t i) {
-  double x, y;
-  graph->GetPoint(i, x, y);
+double Throw::GetPointY(TGraph2D* graph, size_t index) {
+  double* yArr = graph->GetY();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
 
-  return y;
+  return yArr[index];
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get z coordinate of a point
+ */
+double Throw::GetPointZ(TGraph2D* graph, size_t index) {
+  double* zArr = graph->GetZ();
+  if (index < 0 || index >= graph->GetN()) {
+    throw "ERROR: Out of range!";
+  }
+
+  return zArr[index];
 }
 
 /**
  * \ingroup Graph
  * \brief Set x coordinate of a point
  */
-void Throw::SetPointX(TGraph* graph, size_t i, double val) {
-  double x, y;
-  graph->GetPoint(i, x, y);
-  graph->SetPoint(i, val, y);
-}
-
-/**
- * \ingroup Graph
- * \brief Set x coordinate of a point
- */
-void Throw::SetPointX(TGraphAsymmErrors* graph, size_t i, double val) {
-  double x, y;
-  graph->GetPoint(i, x, y);
-  graph->SetPoint(i, val, y);
+void Throw::SetPointX(TGraph2D* graph, size_t index, double val) {
+  double y = GetPointY(graph, index);
+  double z = GetPointZ(graph, index);
+  graph->SetPoint(index, val, y, z);
 }
 
 /**
  * \ingroup Graph
  * \brief Set y coordinate of a point
  */
-void Throw::SetPointY(TGraph* graph, size_t i, double val) {
-  double x, y;
-  graph->GetPoint(i, x, y);
-  graph->SetPoint(i, x, val);
+void Throw::SetPointY(TGraph2D* graph, size_t index, double val) {
+  double x = GetPointX(graph, index);
+  double z = GetPointZ(graph, index);
+  graph->SetPoint(index, x, val, z);
 }
 
 /**
  * \ingroup Graph
- * \brief Set y coordinate of a point
+ * \brief Set z coordinate of a point
  */
-void Throw::SetPointY(TGraphAsymmErrors* graph, size_t i, double val) {
-  double x, y;
-  graph->GetPoint(i, x, y);
-  graph->SetPoint(i, x, val);
+void Throw::SetPointZ(TGraph2D* graph, size_t index, double val) {
+  double x = GetPointX(graph, index);
+  double y = GetPointY(graph, index);
+  graph->SetPoint(index, x, y, val);
 }
 
 

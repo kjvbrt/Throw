@@ -82,13 +82,21 @@ namespace Throw {
    */
   // Graph point
   double GetPointX(TGraph*, size_t);
-  double GetPointX(TGraphAsymmErrors*, size_t);
   double GetPointY(TGraph*, size_t);
-  double GetPointY(TGraphAsymmErrors*, size_t);
   void SetPointX(TGraph*, size_t, double);
-  void SetPointX(TGraphAsymmErrors*, size_t, double);
   void SetPointY(TGraph*, size_t, double);
+
+  double GetPointX(TGraphAsymmErrors*, size_t);
+  double GetPointY(TGraphAsymmErrors*, size_t);
+  void SetPointX(TGraphAsymmErrors*, size_t, double);
   void SetPointY(TGraphAsymmErrors*, size_t, double);
+
+  double GetPointX(TGraph2D*, size_t);
+  double GetPointY(TGraph2D*, size_t);
+  double GetPointZ(TGraph2D*, size_t);
+  void SetPointX(TGraph2D*, size_t, double);
+  void SetPointY(TGraph2D*, size_t, double);
+  void SetPointZ(TGraph2D*, size_t, double);
 
   // Graph minimum/maximum
   int GetMinimumIndex(TGraph*);
