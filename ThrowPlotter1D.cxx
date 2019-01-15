@@ -172,6 +172,30 @@ void Throw::Plotter1D::addGraph(TGraphAsymmErrors* inGraph) {
 }
 
 /**
+ * \brief Get pointer to histogram at index.
+ * \param index index of the histogram
+ */
+TH1D* Throw::Plotter1D::getHist(int index) {
+  if (index >= 0 && index < histVec.size()) {
+    return histVec.at(index);
+  }
+
+  return nullptr;
+}
+
+/**
+ * \brief Get pointer to graph at index.
+ * \param index index of the graph
+ */
+TGraphAsymmErrors* Throw::Plotter1D::getGraph(int index) {
+  if (index >= 0 && index < graphVec.size()) {
+    return graphVec.at(index);
+  }
+
+  return nullptr;
+}
+
+/**
  * \brief Plot drawing function.
  */
 void Throw::Plotter1D::draw() {

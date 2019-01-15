@@ -130,6 +130,30 @@ void Throw::Plotter2D::addGraph(TGraph2D* inGraph) {
 }
 
 /**
+ * \brief Get pointer to histogram at index.
+ * \param index index of the histogram
+ */
+TH2D* Throw::Plotter2D::getHist(int index) {
+  if (index >= 0 && index < histVec.size()) {
+    return histVec.at(index);
+  }
+
+  return nullptr;
+}
+
+/**
+ * \brief Get pointer to graph at index.
+ * \param index index of the graph
+ */
+TGraph2D* Throw::Plotter2D::getGraph(int index) {
+  if (index >= 0 && index < graphVec.size()) {
+    return graphVec.at(index);
+  }
+
+  return nullptr;
+}
+
+/**
  * \brief Plot drawing function.
  */
 void Throw::Plotter2D::draw() {
