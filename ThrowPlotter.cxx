@@ -91,26 +91,38 @@ int Throw::Plotter::pickMarker(int index) {
   return markerVec.at(index);
 }
 
+/**
+ * \brief Get y-axis minimum.
+ */
 double Throw::Plotter::getYmin() {
 
   return yMin;
 }
 
+/**
+ * \brief Get y-axis maximum.
+ */
 double Throw::Plotter::getYmax() {
 
   return yMax;
 }
 
+/**
+ * \brief Set y-axis minimum.
+ */
 void Throw::Plotter::setYmin(double val) {
   yMin = val;
 }
 
+/**
+ * \brief Set y-axis maximum.
+ */
 void Throw::Plotter::setYmax(double val) {
   yMax = val;
 }
 
 /**
- * \brief Returns whether asis X will be in logarithmic scale.
+ * \brief Returns whether x-axis will be in logarithmic scale.
  */
 bool Throw::Plotter::getLogX() {
 
@@ -118,7 +130,7 @@ bool Throw::Plotter::getLogX() {
 }
 
 /**
- * \brief Returns whether asis Y will be in logarithmic scale.
+ * \brief Returns whether y-axis will be in logarithmic scale.
  */
 bool Throw::Plotter::getLogY() {
 
@@ -126,7 +138,7 @@ bool Throw::Plotter::getLogY() {
 }
 
 /**
- * \brief Sets whether asis X will be in logarithmic scale.
+ * \brief Sets whether x-axis will be in logarithmic scale.
  */
 void Throw::Plotter::setLogX(bool val) {
   if (val) {
@@ -137,7 +149,7 @@ void Throw::Plotter::setLogX(bool val) {
 }
 
 /**
- * \brief Sets whether asis Y will be in logarithmic scale.
+ * \brief Sets whether y-axis will be in logarithmic scale.
  */
 void Throw::Plotter::setLogY(bool val) {
   if (val) {
@@ -210,65 +222,109 @@ void Throw::Plotter::putNotesToLegend(TLegend* legend) {
   }
 }
 
+/**
+ * \brief Set whether legend will be drowned.
+ */
 void Throw::Plotter::setDrawLegend(bool val) {
   drawLegend = val;
 }
 
+/**
+ * \brief Set x-axis offset.
+ */
 void Throw::Plotter::setXoffset(double val) {
   xOffset = val;
 }
 
+/**
+ * \brief Set y-axis offset.
+ */
 void Throw::Plotter::setYoffset(double val) {
   yOffset = val;
 }
 
+/**
+ * \brief Get drawing parameter of histogram at index.
+ */
 std::string Throw::Plotter::getHistDrawParam(int index) {
 
   return histDrawParamsVec.at(index);
 }
 
+/**
+ * \brief Get drawing parameter of graph at index.
+ */
 std::string Throw::Plotter::getGraphDrawParam(int index) {
 
   return graphDrawParamsVec.at(index);
 }
 
+/**
+ * \brief Get drawing parameter of function at index.
+ */
 std::string Throw::Plotter::getFuncDrawParam(int index) {
 
   return funcDrawParamsVec.at(index);
 }
 
+/**
+ * \brief Set drawing parameter of histogram at index.
+ */
 void Throw::Plotter::setHistDrawParam(int index,
                                           const std::string& param) {
   histDrawParamsVec.at(index) = param;
 }
 
+/**
+ * \brief Set drawing parameter of graph at index.
+ */
 void Throw::Plotter::setGraphDrawParam(int index,
                                            const std::string& param) {
   graphDrawParamsVec.at(index) = param;
 }
 
+/**
+ * \brief Set drawing parameter of function at index.
+ */
 void Throw::Plotter::setFuncDrawParam(int index,
                                           const std::string& param) {
   funcDrawParamsVec.at(index) = param;
 }
 
+/**
+ * \brief Add histogram drawing parameter to the list of histogram drawing
+ * parameters.
+ */
 void Throw::Plotter::addHistDrawParam(const std::string& param) {
   histDrawParamsVec.emplace_back(param);
 }
 
+/**
+ * \brief Add graph drawing parameter to the list of graph drawing parameters.
+ */
 void Throw::Plotter::addGraphDrawParam(const std::string& param) {
   graphDrawParamsVec.emplace_back(param);
 }
 
+/**
+ * \brief Add function drawing parameter to the list of function drawing
+ * parameters.
+ */
 void Throw::Plotter::addFuncDrawParam(const std::string& param) {
   funcDrawParamsVec.emplace_back(param);
 }
 
+/**
+ * Get plot output file path.
+ */
 std::string Throw::Plotter::getOutFilePath() {
 
   return outFilePath;
 }
 
+/**
+ * Set plot output file path.
+ */
 void Throw::Plotter::setOutFilePath(const std::string& filePath) {
   outFilePath = filePath;
 }

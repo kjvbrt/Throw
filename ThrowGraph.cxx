@@ -171,108 +171,166 @@ void Throw::SetPointZ(TGraph2D* graph, size_t index, double val) {
 
 
 // Graph minimum/maximum
+/**
+ * \ingroup Graph
+ * \brief Get index of graph minimum.
+ */
 int Throw::GetMinimumIndex(TGraph* graph) {
 
   return GetMinimumIndex(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get index of graph minimum.
+ */
 int Throw::GetMinimumIndex(TGraph* graph,
                            const std::string& param = "") {
   unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
-  if (param.find("Err") != std::string::npos) {
-    double y_err[n];
+  double yMin = y[0];
+  int minIndex = -1;
+  if (param.compare("") == 0) {
     for (size_t i = 0; i < n; ++i) {
-      y_err[i] = y[i] - graph->GetErrorYlow(i);
+      if (y[i] < yMin) {
+        yMin = y[i];
+        minIndex = i;
+      }
     }
-    int minIndexErr = TMath::LocMin(n, y_err);
-
-    return minIndexErr;
+  } else if (param.compare("Err") == 0) {
+    double* yErr = graph->GetEYlow();
+    for (size_t i = 0; i < n; ++i) {
+      if (y[i] - yErr[i] < yMin) {
+        yMin = y[i] - yErr[i];
+        minIndex = i;
+      }
+    }
+  } else {
+    minIndex = -1;
   }
-
-  int minIndex = TMath::LocMin(n, y);
 
   return minIndex;
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph minimum.
+ */
 double Throw::GetMinimumX(TGraph* graph) {
 
   return GetMinimumX(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph minimum.
+ */
 double Throw::GetMinimumX(TGraph* graph,
                           const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
-  double x, y;
-  graph->GetPoint(i, x, y);
 
-  return x;
+  return GetPointX(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
 double Throw::GetMinimumY(TGraph* graph) {
 
   return GetMinimumY(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
 double Throw::GetMinimumY(TGraph* graph,
                           const std::string& param = "") {
   int i = GetMinimumIndex(graph, param);
-  double x, y;
-  graph->GetPoint(i, x, y);
 
-  return y;
+  return GetPointY(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get index of graph maximum.
+ */
 int Throw::GetMaximumIndex(TGraph* graph) {
 
   return GetMaximumIndex(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get index of graph maximum.
+ */
 int Throw::GetMaximumIndex(TGraph* graph,
                            const std::string& param = "") {
   unsigned int n = graph->GetN();
   double* y = graph->GetY();
 
-  if (param.find("Err") != std::string::npos) {
-    double y_err[n];
+  double yMax = y[0];
+  int maxIndex = -1;
+  if (param.compare("") == 0) {
     for (size_t i = 0; i < n; ++i) {
-      y_err[i] = y[i] + graph->GetErrorYhigh(i);
+      if (y[i] > yMax) {
+        yMax = y[i];
+        maxIndex = i;
+      }
     }
-    int minIndexErr = TMath::LocMax(n, y_err);
-
-    return minIndexErr;
+  } else if (param.compare("Err") == 0) {
+    double* yErr = graph->GetEYhigh();
+    for (size_t i = 0; i < n; ++i) {
+      if (y[i] + yErr[i] > yMax) {
+        yMax = y[i] + yErr[i];
+        maxIndex = i;
+      }
+    }
+  } else {
+    maxIndex = -1;
   }
-
-  int maxIndex = TMath::LocMax(n, y);
 
   return maxIndex;
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph maximum.
+ */
 double Throw::GetMaximumX(TGraph* graph) {
 
   return GetMaximumX(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph maximum.
+ */
 double Throw::GetMaximumX(TGraph* graph,
                           const std::string& param = "") {
   int i = GetMaximumIndex(graph, param);
-  double x, y;
-  graph->GetPoint(i, x, y);
 
-  return x;
+  return GetPointX(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph maximum.
+ */
 double Throw::GetMaximumY(TGraph* graph) {
 
   return GetMaximumY(graph, "");
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph maximum.
+ */
 double Throw::GetMaximumY(TGraph* graph,
                           const std::string& param = "") {
   int i = GetMaximumIndex(graph, param);
-  double x, y;
-  graph->GetPoint(i, x, y);
 
-  return y;
+  return GetPointY(graph, i);
 }

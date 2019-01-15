@@ -25,7 +25,7 @@
 
 namespace Throw {
   /**
-   * \defgroup StringManipulation
+   * \defgroup StringManipulation String Manipulation
    * \brief Functions for manipulation with strings.
    * @{
    */
@@ -57,7 +57,7 @@ namespace Throw {
 
 
   /**
-   * \defgroup Time
+   * \defgroup Time Time
    * \brief Time related functions.
    * @{
    */
@@ -76,7 +76,7 @@ namespace Throw {
 
 
   /**
-   * \defgroup Graph
+   * \defgroup Graph Graph
    * \brief Graph related functions.
    * @{
    */
@@ -115,7 +115,7 @@ namespace Throw {
 
 
   /**
-   * \defgroup IO
+   * \defgroup IO Input/Output
    * \brief I/O related functions.
    * @{
    */
