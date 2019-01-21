@@ -111,6 +111,10 @@ namespace Throw {
   double GetMaximumX(TGraph*, const std::string&);
   double GetMaximumY(TGraph*);
   double GetMaximumY(TGraph*, const std::string&);
+
+  // Graph section
+  TGraphAsymmErrors* MakeSection(TGraph2D*, double);
+  TGraphAsymmErrors* MakeSection(TGraph2D*, double, double);
   /** @} */
 
 

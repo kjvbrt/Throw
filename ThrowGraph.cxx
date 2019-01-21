@@ -334,3 +334,46 @@ double Throw::GetMaximumY(TGraph* graph,
 
   return GetPointY(graph, i);
 }
+
+// Graph section
+/**
+ * \ingroup Graph
+ * \brief Make a 2D graph section.
+ */
+TGraphAsymmErrors* Throw::MakeSection(TGraph2D* inGraph, double val) {
+
+  return MakeSection(inGraph, val, val / 5.);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Make a 2D graph section.
+ */
+TGraphAsymmErrors* Throw::MakeSection(TGraph2D* inGraph,
+                                      double val, double delta) {
+  TGraphAsymmErrors* graph = new TGraphAsymmErrors();
+  std::string graphName = inGraph->GetName();
+  graphName += "_at_";
+  graphName += std::to_string(val);
+  graph->SetName(graphName.c_str());
+  std::string graphTitle = inGraph->GetTitle();
+  graphTitle += " at ";
+  graphTitle += std::to_string(val);
+  graph->SetTitle(graphTitle.c_str());
+  graph->GetXaxis()->SetTitle(inGraph->GetXaxis()->GetTitle());
+  graph->GetYaxis()->SetTitle(inGraph->GetYaxis()->GetTitle());
+
+  double x = 0.;
+  double y = 0.;
+  double z = 0.;
+  for (size_t i = 0; i < inGraph->GetN(); ++i) {
+    z = GetPointZ(inGraph, i);
+    if (z > val - delta && z < val + delta) {
+      x = GetPointX(inGraph, i);
+      y = GetPointY(inGraph, i);
+      graph->SetPoint(graph->GetN(), x, y);
+    }
+  }
+
+  return graph;
+}

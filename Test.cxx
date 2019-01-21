@@ -66,9 +66,35 @@ void testPlotter2D() {
   delete testPlotGraph;
 }
 
+void testGraphSection() {
+  TF2 *gaus2D = new TF2("gaus2D", "xygaus", -10, 10 , -10, 10);
+  gaus2D->SetParameters(1, 0, 2, 0, 2);
+
+  TH2D* testHist = new TH2D("testHist", "Test Histogram;label x;label y",
+                            300, -5, 8, 300, -5, 8);
+  testHist->FillRandom("gaus2D", 10000 * 10000);
+
+  TGraph2D* testGraph = new TGraph2D(testHist);
+  testGraph->SetTitle("Test Graph;label x;label y");
+
+  TGraphAsymmErrors* section = Throw::MakeSection(testGraph, 100., 1.);
+
+  Plotter1D* sectionPlot = new Plotter1D("sectionPlot");
+  sectionPlot->addGraph(section);
+  sectionPlot->setDrawLegend(false);
+  sectionPlot->draw();
+
+  delete gaus2D;
+  delete testHist;
+  delete testGraph;
+  delete section;
+  delete sectionPlot;
+}
+
 int main() {
   testPlotter1D();
   testPlotter2D();
+  testGraphSection();
 
   return 0;
 }
