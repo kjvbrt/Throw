@@ -335,6 +335,108 @@ double Throw::GetMaximumY(TGraph* graph,
   return GetPointY(graph, i);
 }
 
+/**
+ * \ingroup Graph
+ * \brief Get index of graph minimum.
+ */
+int Throw::GetMinimumIndex(TGraph2D* graph) {
+
+  return GetMinimumIndex(graph, "");
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get index of graph minimum.
+ */
+int Throw::GetMinimumIndex(TGraph2D* graph,
+                           const std::string& param = "") {
+  unsigned int n = graph->GetN();
+  double* z = graph->GetZ();
+
+  double zMin = z[0];
+  int minIndex = -1;
+  if (param.compare("") == 0) {
+    for (size_t i = 0; i < n; ++i) {
+      if (z[i] < zMin) {
+        zMin = z[i];
+        minIndex = i;
+      }
+    }
+  } else if (param.compare("Err") == 0) {
+    double* zErr = graph->GetEZ();
+    for (size_t i = 0; i < n; ++i) {
+      if (z[i] - zErr[i] < zMin) {
+        zMin = z[i] - zErr[i];
+        minIndex = i;
+      }
+    }
+  } else {
+    minIndex = -1;
+  }
+
+  return minIndex;
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph minimum.
+ */
+double Throw::GetMinimumX(TGraph2D* graph) {
+
+  return GetMinimumX(graph, "");
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get x coordinate of graph minimum.
+ */
+double Throw::GetMinimumX(TGraph2D* graph,
+                          const std::string& param = "") {
+  int i = GetMinimumIndex(graph, param);
+
+  return GetPointX(graph, i);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
+double Throw::GetMinimumY(TGraph2D* graph) {
+
+  return GetMinimumY(graph, "");
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
+double Throw::GetMinimumY(TGraph2D* graph,
+                          const std::string& param = "") {
+  int i = GetMinimumIndex(graph, param);
+
+  return GetPointY(graph, i);
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
+double Throw::GetMinimumZ(TGraph2D* graph) {
+
+  return GetMinimumZ(graph, "");
+}
+
+/**
+ * \ingroup Graph
+ * \brief Get y coordinate of graph minimum.
+ */
+double Throw::GetMinimumZ(TGraph2D* graph,
+                          const std::string& param = "") {
+  int i = GetMinimumIndex(graph, param);
+
+  return GetPointZ(graph, i);
+}
+
 // Graph section
 /**
  * \ingroup Graph

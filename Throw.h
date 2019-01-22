@@ -105,12 +105,22 @@ namespace Throw {
   double GetMinimumX(TGraph*, const std::string&);
   double GetMinimumY(TGraph*);
   double GetMinimumY(TGraph*, const std::string&);
+
   int GetMaximumIndex(TGraph*);
   int GetMaximumIndex(TGraph*, const std::string&);
   double GetMaximumX(TGraph*);
   double GetMaximumX(TGraph*, const std::string&);
   double GetMaximumY(TGraph*);
   double GetMaximumY(TGraph*, const std::string&);
+
+  int GetMinimumIndex(TGraph2D*);
+  int GetMinimumIndex(TGraph2D*, const std::string&);
+  double GetMinimumX(TGraph2D*);
+  double GetMinimumX(TGraph2D*, const std::string&);
+  double GetMinimumY(TGraph2D*);
+  double GetMinimumY(TGraph2D*, const std::string&);
+  double GetMinimumZ(TGraph2D*);
+  double GetMinimumZ(TGraph2D*, const std::string&);
 
   // Graph section
   TGraphAsymmErrors* MakeSection(TGraph2D*, double);
