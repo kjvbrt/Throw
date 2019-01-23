@@ -477,5 +477,9 @@ TGraphAsymmErrors* Throw::MakeSection(TGraph2D* inGraph,
     }
   }
 
+  if (graph->GetN() < 1) {
+    return nullptr;
+  }
+
   return graph;
 }

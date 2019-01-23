@@ -84,6 +84,10 @@ void Throw::Plotter1D::rotateGraphsMarkers(int diff = 0) {
  * \param inHist histogram to be added.
  */
 void Throw::Plotter1D::addHist(TH1D* inHist) {
+  if (!inHist) {
+    throw "ERROR: Empty histogram added!";
+  }
+
   std::string histName = inHist->GetName();
   histName += "_" + RandomString();
   TH1D* hist = dynamic_cast<TH1D*>(inHist->Clone(histName.c_str()));
@@ -130,6 +134,10 @@ void Throw::Plotter1D::addHist(TH1D* inHist) {
  * \param inGraph graph to be added.
  */
 void Throw::Plotter1D::addGraph(TGraphAsymmErrors* inGraph) {
+  if (!inGraph) {
+    throw "ERROR: Empty graph added!";
+  }
+
   std::string graphName = inGraph->GetName();
   graphName += "_" + RandomString();
   TGraphAsymmErrors* graph = dynamic_cast<TGraphAsymmErrors*>(

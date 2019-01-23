@@ -85,6 +85,10 @@ void Throw::Plotter2D::rotateGraphsMarkers(int diff = 0) {
  * \param inHist histogram to be added.
  */
 void Throw::Plotter2D::addHist(TH2D* inHist) {
+  if (!inHist) {
+    throw "ERROR: Empty histogram added!";
+  }
+
   std::string histName = inHist->GetName();
   histName += "_" + RandomString();
   TH2D* hist = dynamic_cast<TH2D*>(inHist->Clone(histName.c_str()));
@@ -110,6 +114,10 @@ void Throw::Plotter2D::addHist(TH2D* inHist) {
  * \param inGraph graph to be added.
  */
 void Throw::Plotter2D::addGraph(TGraph2D* inGraph) {
+  if (!inGraph) {
+    throw "ERROR: Empty graph added!";
+  }
+
   std::string graphName = inGraph->GetName();
   graphName += "_" + RandomString();
   TGraph2D* graph = dynamic_cast<TGraph2D*>(inGraph->Clone(graphName.c_str()));
