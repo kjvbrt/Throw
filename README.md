@@ -1,3 +1,3 @@
 # Throw
 
-A small complementary ROOT library.
+A small ROOT library.
