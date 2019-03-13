@@ -193,7 +193,7 @@ int Throw::GetMinimumIndex(TGraph* graph,
   int minIndex = -1;
   if (param.compare("") == 0) {
     for (size_t i = 0; i < n; ++i) {
-      if (y[i] < yMin) {
+      if (y[i] <= yMin) {
         yMin = y[i];
         minIndex = i;
       }
@@ -201,7 +201,7 @@ int Throw::GetMinimumIndex(TGraph* graph,
   } else if (param.compare("Err") == 0) {
     double* yErr = graph->GetEYlow();
     for (size_t i = 0; i < n; ++i) {
-      if (y[i] - yErr[i] < yMin) {
+      if (y[i] - yErr[i] <= yMin) {
         yMin = y[i] - yErr[i];
         minIndex = i;
       }
@@ -275,7 +275,7 @@ int Throw::GetMaximumIndex(TGraph* graph,
   int maxIndex = -1;
   if (param.compare("") == 0) {
     for (size_t i = 0; i < n; ++i) {
-      if (y[i] > yMax) {
+      if (y[i] >= yMax) {
         yMax = y[i];
         maxIndex = i;
       }
@@ -283,7 +283,7 @@ int Throw::GetMaximumIndex(TGraph* graph,
   } else if (param.compare("Err") == 0) {
     double* yErr = graph->GetEYhigh();
     for (size_t i = 0; i < n; ++i) {
-      if (y[i] + yErr[i] > yMax) {
+      if (y[i] + yErr[i] >= yMax) {
         yMax = y[i] + yErr[i];
         maxIndex = i;
       }
