@@ -135,6 +135,9 @@ namespace Throw {
    */
   bool FileExists(const std::string&);
   void PrintHist(TH1D*, const std::string&);
+  void QuickOut(TObject*);
+  void QuickOut(TObject*, const std::string&);
+  void QuickOut(TObject*, const std::string&, const std::string&);
   /** @} */
 
 

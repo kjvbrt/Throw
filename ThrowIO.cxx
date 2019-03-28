@@ -7,6 +7,8 @@
 // std
 #include <string>
 #include <fstream>
+// Root
+#include <TFile.h>
 // Throw
 #include "Throw.h"
 
@@ -49,4 +51,63 @@ void Throw::PrintHist(TH1D* hist, const std::string& filePath) {
   }
 
   return;
+}
+
+/**
+ * \ingroup IO
+ * \brief Quickly output an object to a root file.
+ *
+ * The root file will be created in the location of the executable and root file
+ * name will be inherited from the name of the object.
+ */
+void Throw::QuickOut(TObject* object) {
+  QuickOut(object, "", "");
+}
+
+/**
+ * \ingroup IO
+ * \brief Quickly output an object to a root file.
+ *
+ * \param path root file path without root file name.
+ *
+ * The name of the file will inherited from the object name.
+ */
+void Throw::QuickOut(TObject* object, const std::string& path) {
+  QuickOut(object, path, "");
+}
+
+/**
+ * \ingroup IO
+ * \brief Quickly output an object to a root file.
+ *
+ * \param path root file path without root file name.
+ * \param name object name.
+ *
+ * The name of the file will inherited from the object name.
+ */
+void Throw::QuickOut(TObject* object,
+                     const std::string& path,
+                     const std::string& name) {
+  std::string objectPath = object->GetName();
+  objectPath = "./" + objectPath;
+  if (!path.empty()) {
+    objectPath = path;
+  }
+
+  std::string objectName = object->GetName();
+  if (!name.empty()) {
+    objectName = name;
+  }
+
+  system(("mkdir -p " + objectPath).c_str());
+
+  TFile* outFile = new TFile((objectPath + "/" + objectName + ".root").c_str(),
+                             "RECREATE");
+  if (outFile->IsOpen()) {
+    object->Write(objectName.c_str());
+    outFile->Write();
+    outFile->Close();
+  }
+
+  delete outFile;
 }
