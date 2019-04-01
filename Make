@@ -111,7 +111,7 @@ fi
 if [ ${SUCCESS} -eq 0 ] && [ "${PACK}" == true ]; then
   echo "INFO: Packing..."
   cd ${WORK_DIR}
-  tar -czvf Throw.tar.gz Throw.h Throw*cxx Build/libThrow.a
+  tar -czvf Throw.tar.gz Throw.h Throw*cxx Build/libThrow.a README.md LICENSE
 fi
 
 if [ ${SUCCESS} -eq 0 ] && [ "${UPLOAD}" == true ]; then
@@ -130,6 +130,11 @@ if [ ${SUCCESS} -eq 0 ] && [ "${DOCUMENTATION}" == true ]; then
   echo "INFO: Compiling documentation..."
   cd ${WORK_DIR}
   doxygen
+  scp -r Documentation/html/* boltzmann:/var/www/kjvbrt.org/Throw/Documentation/
+  if [ $? -ne 0 ]; then
+    echo "ERROR: Problem with documentation upload!"
+    exit 1
+  fi
 fi
 
 exit ${SUCCESS}
