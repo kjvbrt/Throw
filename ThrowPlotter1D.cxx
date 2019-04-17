@@ -133,6 +133,36 @@ void Throw::Plotter1D::addHist(TH1D* inHist) {
  *
  * \param inGraph graph to be added.
  */
+void Throw::Plotter1D::addGraph(TGraph* inGraph) {
+  if (!inGraph) {
+    throw "ERROR: Empty graph added!";
+  }
+
+  TGraphAsymmErrors* graph = new TGraphAsymmErrors(inGraph->GetN());
+  double x = -1e9;
+  double y = -1e9;
+  for (size_t i = 0; i < inGraph->GetN(); ++i) {
+    inGraph->GetPoint(i, x, y);
+    graph->SetPoint(i, x, y);
+  }
+
+  std::string graphName = inGraph->GetName();
+  graphName += "_" + RandomString();
+  graph->SetName(graphName.c_str());
+  graph->SetTitle(inGraph->GetTitle());
+  graph->GetXaxis()->SetTitle(inGraph->GetXaxis()->GetTitle());
+  graph->GetYaxis()->SetTitle(inGraph->GetYaxis()->GetTitle());
+
+  addGraph(graph);
+
+  delete graph;
+}
+
+/**
+ * \brief Add graph to the list of graphs.
+ *
+ * \param inGraph graph to be added.
+ */
 void Throw::Plotter1D::addGraph(TGraphAsymmErrors* inGraph) {
   if (!inGraph) {
     throw "ERROR: Empty graph added!";

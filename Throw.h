@@ -260,6 +260,7 @@ namespace Throw {
       ~Plotter1D();
 
       void addHist(TH1D*);
+      void addGraph(TGraph*);
       void addGraph(TGraphAsymmErrors*);
       void addFunc(TF1*);
       TH1D* getHist(int);
