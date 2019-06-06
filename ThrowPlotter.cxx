@@ -122,6 +122,36 @@ void Throw::Plotter::setYmax(double val) {
 }
 
 /**
+ * \brief Get x-axis minimum.
+ */
+double Throw::Plotter::getXmin() {
+
+  return xMin;
+}
+
+/**
+ * \brief Get x-axis maximum.
+ */
+double Throw::Plotter::getXmax() {
+
+  return xMax;
+}
+
+/**
+ * \brief Set x-axis minimum.
+ */
+void Throw::Plotter::setXmin(double val) {
+  xMin = val;
+}
+
+/**
+ * \brief Set x-axis maximum.
+ */
+void Throw::Plotter::setXmax(double val) {
+  xMax = val;
+}
+
+/**
  * \brief Returns whether x-axis will be in logarithmic scale.
  */
 bool Throw::Plotter::getLogX() {

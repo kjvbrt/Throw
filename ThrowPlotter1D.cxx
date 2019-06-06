@@ -313,6 +313,9 @@ void Throw::Plotter1D::draw() {
     histVec.at(i)->GetYaxis()->SetTitleSize(12);
     histVec.at(i)->GetYaxis()->SetTitleOffset(getYoffset());
 
+    if (getXmax() > getXmin()) {
+      histVec.at(i)->GetXaxis()->SetRangeUser(getXmin(), getXmax());
+    }
     histVec.at(i)->SetMinimum(getYmin());
     histVec.at(i)->SetMaximum(getYmax());
 
@@ -344,6 +347,9 @@ void Throw::Plotter1D::draw() {
     graphVec.at(i)->GetYaxis()->SetTitleSize(12);
     graphVec.at(i)->GetYaxis()->SetTitleOffset(getYoffset());
 
+    if (getXmax() > getXmin()) {
+      graphVec.at(i)->GetXaxis()->SetRangeUser(getXmin(), getXmax());
+    }
     graphVec.at(i)->SetMinimum(getYmin());
     graphVec.at(i)->SetMaximum(getYmax());
 
@@ -375,6 +381,9 @@ void Throw::Plotter1D::draw() {
     funcVec.at(i)->GetYaxis()->SetTitleSize(12);
     funcVec.at(i)->GetYaxis()->SetTitleOffset(getYoffset());
 
+    if (getXmax() > getXmin()) {
+      funcVec.at(i)->GetXaxis()->SetRangeUser(getXmin(), getXmax());
+    }
     funcVec.at(i)->GetXaxis()->SetTitle(getXlabel().c_str());
     funcVec.at(i)->GetYaxis()->SetTitle(getYlabel().c_str());
 
