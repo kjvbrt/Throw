@@ -345,6 +345,29 @@ void Throw::Plotter::addFuncDrawParam(const std::string& param) {
 }
 
 /**
+ * \brief Add line to the vector of lines.
+ */
+void Throw::Plotter::addLine(TLine* line) {
+  if (!line) {
+    throw "ERROR: Throw::Plotter::addLine -- Null TLine* provided!";
+  }
+
+  lineVec.emplace_back(line);
+}
+
+/**
+ * \brief Add line to the vector of lines.
+ */
+void Throw::Plotter::addLabel(TPaveText* label) {
+  if (!label) {
+    throw "ERROR: Throw::Plotter::addLabel -- Null TPaveText* provided!";
+  }
+
+  labelVec.emplace_back(label);
+}
+
+
+/**
  * Get plot output file path.
  */
 std::string Throw::Plotter::getOutFilePath() {

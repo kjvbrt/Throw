@@ -422,6 +422,14 @@ void Throw::Plotter1D::draw() {
     atlasLabel = new TPaveText();
   }
 
+  for (int i = 0; i < lineVec.size(); ++i) {
+    lineVec.at(i)->Draw();
+  }
+
+  for (int i = 0; i < labelVec.size(); ++i) {
+    labelVec.at(i)->Draw();
+  }
+
   canvas->Update();
   canvas->Print((getOutFilePath() + ".pdf").c_str());
 

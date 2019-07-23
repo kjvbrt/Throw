@@ -21,6 +21,8 @@
 #include <TGraph2D.h>
 #include <TF2.h>
 #include <TLegend.h>
+#include <TLine.h>
+#include <TPaveText.h>
 
 
 namespace Throw {
@@ -172,6 +174,9 @@ namespace Throw {
       std::string outFilePath;
 
     public:
+      std::vector<TLine*> lineVec;
+      std::vector<TPaveText*> labelVec;
+
       void addHistDrawParam(const std::string&);
       void addGraphDrawParam(const std::string&);
       void addFuncDrawParam(const std::string&);
@@ -181,6 +186,9 @@ namespace Throw {
       void setHistDrawParam(int, const std::string&);
       void setGraphDrawParam(int, const std::string&);
       void setFuncDrawParam(int, const std::string&);
+
+      void addLine(TLine*);
+      void addLabel(TPaveText*);
 
       bool drawLegend;
       double legendX1;
